@@ -1,4 +1,4 @@
-##🧪 How to Work on the Exercises
+## 🧪 How to Work on the Exercises
 
 Each exercise is described in a GitHub Issue. Follow these steps to complete an exercise and submit your solution:
 
