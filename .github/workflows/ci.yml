@@ -1,0 +1,32 @@
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract JDK version from pom.xml
+        id: extract_jdk
+        run: |
+          JDK_VERSION=$(xmllint --xpath "string(//maven.compiler.source)" pom.xml)
+          echo "jdk_version=$JDK_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ steps.extract_jdk.outputs.jdk_version }}
+          cache: maven
+
+      - name: Compile with Maven
+        run: mvn -B --no-transfer-progress compile
+
+      - name: Run tests with Maven
+        run: mvn -B --no-transfer-progress test
