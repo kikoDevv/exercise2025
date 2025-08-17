@@ -12,17 +12,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract JDK version from pom.xml
-        id: extract_jdk
+      - name: Get Java Version
         run: |
-          JDK_VERSION=$(xmllint --xpath "string(//maven.compiler.source)" pom.xml)
-          echo "jdk_version=$JDK_VERSION" >> $GITHUB_OUTPUT
+          Java_Version=$(mvn help:evaluate "-Dexpression=maven.compiler.release" -q -DforceStdout | sed -e 's/^1\./1.0./')
+          echo "Java_Version=$Java_Version" >> $GITHUB_ENV
 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: ${{ steps.extract_jdk.outputs.jdk_version }}
+          java-version: ${{ env.Java_Version }}
           cache: maven
 
       - name: Compile with Maven
