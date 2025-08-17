@@ -59,9 +59,6 @@
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                     </compilerArgs>
-                    <testCompilerArguments>
-                        <arg>--enable-preview</arg>
-                    </testCompilerArguments>
                 </configuration>
             </plugin>
             <plugin>
