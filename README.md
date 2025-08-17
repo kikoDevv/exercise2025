@@ -1,49 +1,30 @@
-# 🚀 Create Your First Java Program
+🧪 How to Work on the Exercises
+Each exercise is described in a GitHub Issue. Follow these steps to complete an exercise and submit your solution:
 
-Java has evolved to become more beginner-friendly. This guide walks you through creating a simple program that prints “Hello World,” using both the classic syntax and the new streamlined approach introduced in Java 21.
+📥 1. Clone or Fork the Repository
+bash
+git clone https://github.com/fungover/exercise2025.git
+Or fork the repository via GitHub and clone your fork.
 
----
+🌱 2. Create a Branch
+Create a new branch named using the format: your-github-username/exerciseNumber
 
-## ✨ Classic Java Approach
+Example for user githubuser working on Exercise 1:
 
-Traditionally, Java requires a class with a `main` method as the entry point:
+bash
+git checkout -b githubuser/exercise1
+🛠️ 3. Implement Your Solution
+Follow the instructions in the corresponding issue. If anything is unclear, ask questions by commenting directly on the issue.
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello World");
-    }
-}
-```
+🚀 4. Push Your Branch
+bash
+git push origin githubuser/exercise1
+📬 5. Create a Pull Request
+Open a Pull Request (PR) from your branch.
 
-This works across all Java versions and forms the foundation of most Java programs.
+Link the PR to the issue you're solving.
 
----
+Include a clear description of your solution.
 
-## 🆕 Java 25: Unnamed Class with Instance Main Method
-
-In newer versions like **Java 25**, you can use **Unnamed Classes** and an **Instance Main Method**, which allows for a much cleaner syntax:
-
-```java
-void main() {
-    System.out.println("Hello World");
-}
-```
-
-### 💡 Why is this cool?
-
-- ✅ No need for a `public class` declaration  
-- ✅ No `static` keyword required  
-- ✅ Great for quick scripts and learning  
-
-To compile and run this, use:
-
-```bash
-java --source 25 HelloWorld.java
-```
-
----
-
-## 📚 Learn More
-
-This feature is part of Java’s ongoing effort to streamline syntax. You can explore deeper in [Baeldung’s guide to Unnamed Classes and Instance Main Methods](https://www.baeldung.com/java-21-unnamed-class-instance-main).
+💬 6. Feedback and Iteration
+Reviewers may leave comments or suggestions. Update your branch and push changes until the PR is approved.
