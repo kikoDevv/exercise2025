@@ -64,32 +64,4 @@ public class GetPrices {
       throw new RuntimeException("Error fetching price data: " + e.getMessage(), e);
     }
   }
-
-  public static void main(String[] args) {
-    GetPrices priceService = new GetPrices();
-
-    try {
-      //--Get raw JSON string--
-      String rawPrices = priceService.findAll();
-      System.out.println("-----------Raw JSON response here----------:");
-      System.out.println(rawPrices);
-
-      System.out.println("=============== Parsed data ================");
-
-      //---Get parsed PriceData objects---
-      List<PriceData> priceDataList = priceService.findAllPrices();
-      System.out.println("Parsed electricity prices:");
-
-      for (PriceData price : priceDataList) {
-        System.out.printf("From %s to %s: %.4f SEK/kWh%n",
-                         price.getTime_start(),
-                         price.getTime_end(),
-                         price.getSEK_per_kWh());
-      }
-
-    } catch (Exception e) {
-      System.err.println("Error: " + e.getMessage());
-    }
-  }
-
 }
