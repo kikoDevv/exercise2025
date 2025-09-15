@@ -5,12 +5,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class getPrices {
+public class GetPrices {
   private static final String URL = "https://www.elprisetjustnu.se/api/v1/prices/2025/09-15_SE3.json";
 
   private final HttpClient client;
 
-  public getPrices() {
+  public GetPrices() {
     client = HttpClient.newHttpClient();
   }
 
@@ -36,7 +36,7 @@ public class getPrices {
   };
 
   public static void main(String[] args) {
-    getPrices priceService = new getPrices();
+    GetPrices priceService = new GetPrices();
 
     try {
       String prices = priceService.findAll();
