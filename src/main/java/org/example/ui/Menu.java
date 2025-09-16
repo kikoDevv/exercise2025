@@ -71,13 +71,15 @@ public class Menu {
     print("|                                                                |");
     print("|              AVERAGE PRICE ANALYSIS IS READY                   |");
     print("|                                                                |");
-    print("|       Zone  " + zoneName + " " + zoneId + "                                |");
+    String zoneInfo = "Zone  " + zoneName + " " + zoneId;
+    String paddedZoneInfo = String.format("|        %-56s|", zoneInfo);
+    print(paddedZoneInfo);
     print("|       The total hours analyzed is " + totalHours + "                           |");
     print(String.format("|       The average price in this time zone is: %.4f SEK/kWh   |", averagePrice));
     if (averagePrice < 0.20) {
       print("|       Great! Today has relatively low electricity prices.      |");
     } else if (averagePrice > 0.50) {
-      print("|       Today has relatively high electricity prices. Consider delaying energy-intensive activities  |");
+      print("|       Today has relatively high electricity prices!            |");
     } else {
       print("|       Today has moderate electricity prices.                   |");
     }

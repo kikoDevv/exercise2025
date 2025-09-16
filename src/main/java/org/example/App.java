@@ -7,107 +7,162 @@ import org.example.service.AllHourlyPrices;
 import org.example.service.CSVImport;
 import org.example.ui.Menu;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class App {
+    private static final String[] ZONE_IDS = { "", "SE3", "SE1", "SE2", "SE4" };
+    private static final String[] ZONE_NAMES = { "", "Stockholm", "Luleå", "Sundsvall", "Malmö" };
+
+    private static void printGoodbyeMessage(String userName) {
+        System.out.println("Goodbye " + userName + "! Thanks for using electricity scout.");
+    }
+
+    //--user input handler--
+    private static int getValidIntegerInput(Scanner scanner, int min, int max, String errorMessage) {
+        int input = -1;
+        boolean validInput = false;
+
+        while (!validInput) {
+            try {
+                input = scanner.nextInt();
+                if (input >= min && input <= max) {
+                    validInput = true;
+                } else {
+                    System.out.println(errorMessage);
+                    System.out.print("Please try again: ");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Wrong input! Please enter a number.");
+                System.out.print("Please try again: ");
+                scanner.nextLine();
+            }
+        }
+        scanner.nextLine();
+        return input;
+    }
+
+    private static String getValidStringInput(Scanner scanner) {
+        String input = "";
+        while (input.trim().isEmpty()) {
+            input = scanner.nextLine();
+            if (input.trim().isEmpty()) {
+                System.out.println("Name cannot be empty!");
+                System.out.print("Please enter your name: ");
+            }
+        }
+        return input.trim();
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        // ------------props------------
-        Boolean appIsRunning = true;
-        String userName;
-        int selectedZone = 0;
-        int averageMenuOption = 0;
-        int selectedMainMenu = 0;
-        String[] zoneIds = { "", "SE3", "SE1", "SE2", "SE4" };
-        String[] zoneNames = { "", "Stockholm", "Luleå", "Sundsvall", "Malmö" };
 
-        // --user name menu--
-        Menu.spacer(20);
-        Menu.userNameMenu();
-        userName = scanner.nextLine();
+        try {
+            // ------------props------------
+            boolean appIsRunning = true;
+            String userName;
+            int selectedZone = 0;
+            int averageMenuOption = 0;
+            int selectedMainMenu = 0;
+
+            // --user name menu--
+            Menu.spacer(20);
+            Menu.userNameMenu();
+            userName = getValidStringInput(scanner);
 
         while (appIsRunning) {
             // --zone menu---
             Menu.spacer(20);
             Menu.zoneMenu(userName);
-            selectedZone = scanner.nextInt();
-            scanner.nextLine();
+            selectedZone = getValidIntegerInput(scanner, 1, 6, "Wrong zone selection! Please select a number between 1-6.");
+
             if (selectedZone == 6) {
-                System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
+                printGoodbyeMessage(userName);
                 appIsRunning = false;
                 break;
             }
+
+            // Validate zone selection (1-5 are valid zones)
+            if (selectedZone < 1 || selectedZone > 5) {
+                System.out.println("Wrong zone selection! Please select a number between 1-5.");
+                continue;
+            }
+
             // --Main menu--
             Menu.spacer(20);
-            Menu.mainMenu(userName, zoneNames[selectedZone]);
-            selectedMainMenu = scanner.nextInt();
-            scanner.nextLine();
+            Menu.mainMenu(userName, ZONE_NAMES[selectedZone]);
+            selectedMainMenu = getValidIntegerInput(scanner, 1, 6, "Wrong option! Please select a number between 1-6.");
 
             // ------Handle user selection----
             switch (selectedMainMenu) {
                 case 1:
                     // --Show today's average electricity cost for 24H period--
-                    AveragePrice.showAveragePrice(userName, zoneNames[selectedZone], zoneIds[selectedZone]);
-                    averageMenuOption = scanner.nextInt();
-                    scanner.nextLine();
+                    AveragePrice.showAveragePrice(userName, ZONE_NAMES[selectedZone], ZONE_IDS[selectedZone]);
+                    averageMenuOption = getValidIntegerInput(scanner, 1, 2, "Wrong option! Please select 1 or 2.");
                     if (averageMenuOption == 2) {
-                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
+                        printGoodbyeMessage(userName);
                         appIsRunning = false;
                         break;
                     }
                     break;
                 case 2:
                     // --Find cheapest and most expensive hours--
-                    MinMaxPrice.showMinMaxPrices(userName, zoneNames[selectedZone], zoneIds[selectedZone]);
-                    averageMenuOption = scanner.nextInt();
-                    scanner.nextLine();
+                    MinMaxPrice.showMinMaxPrices(userName, ZONE_NAMES[selectedZone], ZONE_IDS[selectedZone]);
+                    averageMenuOption = getValidIntegerInput(scanner, 1, 2, "Wrong option! Please select 1 or 2.");
                     if (averageMenuOption == 2) {
-                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
+                        printGoodbyeMessage(userName);
                         appIsRunning = false;
                         break;
                     }
                     break;
                 case 3:
                     // --Find best EV charging times--
-                    EVChargingOptimizer.showBestChargingTimes(userName, zoneNames[selectedZone], zoneIds[selectedZone]);
-                    averageMenuOption = scanner.nextInt();
-                    scanner.nextLine();
+                    EVChargingOptimizer.showBestChargingTimes(userName, ZONE_NAMES[selectedZone], ZONE_IDS[selectedZone]);
+                    averageMenuOption = getValidIntegerInput(scanner, 1, 2, "Wrong option! Please select 1 or 2.");
                     if (averageMenuOption == 2) {
-                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
+                        printGoodbyeMessage(userName);
                         appIsRunning = false;
                         break;
                     }
                     break;
                 case 4:
                     // --Show all hourly prices--
-                    AllHourlyPrices.showAllHourlyPrices(userName, zoneNames[selectedZone], zoneIds[selectedZone]);
-                    averageMenuOption = scanner.nextInt();
-                    scanner.nextLine();
+                    AllHourlyPrices.showAllHourlyPrices(userName, ZONE_NAMES[selectedZone], ZONE_IDS[selectedZone]);
+                    averageMenuOption = getValidIntegerInput(scanner, 1, 2, "Wrong option! Please select 1 or 2.");
                     if (averageMenuOption == 2) {
-                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
+                        printGoodbyeMessage(userName);
                         appIsRunning = false;
                         break;
                     }
                     break;
                 case 5:
                     //--CSV import and cost calculation--
-                    CSVImport.showCSVImport(userName, zoneNames[selectedZone], zoneIds[selectedZone], scanner);
-                    averageMenuOption = scanner.nextInt();
-                    scanner.nextLine();
-                    if (averageMenuOption == 2) {
-                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
-                        appIsRunning = false;
-                        break;
+                    try {
+                        CSVImport.showCSVImport(userName, ZONE_NAMES[selectedZone], ZONE_IDS[selectedZone], scanner);
+                        averageMenuOption = getValidIntegerInput(scanner, 1, 2, "Wrong option! Please select 1 or 2.");
+                        if (averageMenuOption == 2) {
+                            printGoodbyeMessage(userName);
+                            appIsRunning = false;
+                            break;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error with CSV import: " + e.getMessage());
+                        System.out.println("Returning to main menu...");
                     }
                     break;
                 case 6:
-                    System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
+                    printGoodbyeMessage(userName);
                     appIsRunning = false;
                     break;
                 default:
-                    System.out.println("Invalid option. Please select a number between 1-6.");
+                    System.out.println("Invalid option! Please select a number between 1-6.");
             }
         }
-        scanner.close();
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+            System.out.println("The application will now exit.");
+        } finally {
+            scanner.close();
+        }
     }
 
 }

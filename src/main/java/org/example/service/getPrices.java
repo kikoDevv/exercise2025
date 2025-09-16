@@ -14,12 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GetPrices {
+  private static final String API_URL_PATTERN = "https://www.elprisetjustnu.se/api/v1/prices/%d/%s_%s.json";
+  private static final String DEFAULT_ZONE = "SE3"; // Stockholm
+
   private final HttpClient client;
   private final ObjectMapper objectMapper;
   private final String zoneId;
 
   public GetPrices() {
-    this("SE3"); // Default to Stockholm
+    this(DEFAULT_ZONE);
   }
 
   public GetPrices(String zoneId) {
@@ -37,7 +40,7 @@ public class GetPrices {
       List<PriceData> todayPrices = fetchPricesForDate(today);
       allPrices.addAll(todayPrices);
 
-      // --get tommorrws price if availble--
+      // --get tomorrow's price if available--
       try {
         LocalDate tomorrow = today.plusDays(1);
         List<PriceData> tomorrowPrices = fetchPricesForDate(tomorrow);
@@ -56,7 +59,7 @@ public class GetPrices {
   private List<PriceData> fetchPricesForDate(LocalDate date) {
     try {
       String dateStr = date.format(DateTimeFormatter.ofPattern("MM-dd"));
-      String url = String.format("https://www.elprisetjustnu.se/api/v1/prices/%d/%s_%s.json",
+      String url = String.format(API_URL_PATTERN,
           date.getYear(), dateStr, zoneId);
 
       HttpRequest request = HttpRequest.newBuilder()
@@ -85,7 +88,7 @@ public class GetPrices {
     try {
       LocalDate today = LocalDate.now();
       String dateStr = today.format(DateTimeFormatter.ofPattern("MM-dd"));
-      String url = String.format("https://www.elprisetjustnu.se/api/v1/prices/%d/%s_%s.json",
+      String url = String.format(API_URL_PATTERN,
           today.getYear(), dateStr, zoneId);
 
       HttpRequest request = HttpRequest.newBuilder()
