@@ -3,6 +3,8 @@ package org.example;
 import org.example.service.AveragePrice;
 import org.example.service.MinMaxPrice;
 import org.example.service.EVChargingOptimizer;
+import org.example.service.AllHourlyPrices;
+import org.example.service.CSVImport;
 import org.example.ui.Menu;
 import java.util.Scanner;
 
@@ -30,6 +32,7 @@ public class App {
             selectedZone = scanner.nextInt();
             scanner.nextLine();
             if (selectedZone == 6) {
+                System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
                 appIsRunning = false;
                 break;
             }
@@ -47,6 +50,7 @@ public class App {
                     averageMenuOption = scanner.nextInt();
                     scanner.nextLine();
                     if (averageMenuOption == 2) {
+                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
                         appIsRunning = false;
                         break;
                     }
@@ -57,6 +61,7 @@ public class App {
                     averageMenuOption = scanner.nextInt();
                     scanner.nextLine();
                     if (averageMenuOption == 2) {
+                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
                         appIsRunning = false;
                         break;
                     }
@@ -67,14 +72,32 @@ public class App {
                     averageMenuOption = scanner.nextInt();
                     scanner.nextLine();
                     if (averageMenuOption == 2) {
+                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
                         appIsRunning = false;
+                        break;
                     }
                     break;
                 case 4:
-                    System.out.println("Feature coming soon: All hourly prices");
+                    // --Show all hourly prices--
+                    AllHourlyPrices.showAllHourlyPrices(userName, zoneNames[selectedZone], zoneIds[selectedZone]);
+                    averageMenuOption = scanner.nextInt();
+                    scanner.nextLine();
+                    if (averageMenuOption == 2) {
+                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
+                        appIsRunning = false;
+                        break;
+                    }
                     break;
                 case 5:
-                    System.out.println("Feature coming soon: CSV import");
+                    //--CSV import and cost calculation--
+                    CSVImport.showCSVImport(userName, zoneNames[selectedZone], zoneIds[selectedZone], scanner);
+                    averageMenuOption = scanner.nextInt();
+                    scanner.nextLine();
+                    if (averageMenuOption == 2) {
+                        System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");
+                        appIsRunning = false;
+                        break;
+                    }
                     break;
                 case 6:
                     System.out.println("Goodbye " + userName + "! Thanks for using the Electricity Price CLI.");

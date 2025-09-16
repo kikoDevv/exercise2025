@@ -8,7 +8,7 @@ public class AveragePrice {
     // --------Method to calculate and show average price---------
     public static void showAveragePrice(String userName, String zoneName, String zoneId) {
         try {
-            GetPrices service = new GetPrices();
+            GetPrices service = new GetPrices(zoneId);
             List<PriceData> prices = service.findAllPrices();
             if (prices.isEmpty()) {
                 System.out.println("No price data available.");

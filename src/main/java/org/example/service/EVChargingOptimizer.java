@@ -8,7 +8,7 @@ public class EVChargingOptimizer {
 
   public static void showBestChargingTimes(String userName, String zoneName, String zoneId) {
     try {
-      GetPrices service = new GetPrices();
+      GetPrices service = new GetPrices(zoneId);
       List<PriceData> prices = service.findAllPrices();
 
       if (prices.isEmpty()) {

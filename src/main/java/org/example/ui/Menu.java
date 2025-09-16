@@ -79,7 +79,7 @@ public class Menu {
     } else if (averagePrice > 0.50) {
       print("|       Today has relatively high electricity prices. Consider delaying energy-intensive activities  |");
     } else {
-      print("|            Today has moderate electricity prices.  |");
+      print("|       Today has moderate electricity prices.                   |");
     }
     print("|                                                                |");
     print("|       [1] Restart from the begining                            |");
@@ -166,7 +166,48 @@ public class Menu {
     System.out.print("|~~~~~>:");
   }
 
-  // -----------func to print spacer vertically-----------
+  // All hourly prices menu
+  public static void allHourlyPricesMenu(String userName, String zoneName, java.util.List<org.example.model.PriceData> prices) {
+    spacer(20);
+    print("|============[All Hourly Prices for " + userName + " in " + zoneName + "]=============|");
+    print("|                                                                |");
+    print("|               TODAY'S HOURLY ELECTRICITY PRICES                |");
+    print("|                                                                |");
+
+    for (int i = 0; i < Math.min(prices.size(), 24); i++) {
+      org.example.model.PriceData price = prices.get(i);
+      String timeRange = price.getTime_start().substring(11, 16) + "-" + price.getTime_end().substring(11, 16);
+      print(String.format("|                   %s: %.4f SEK/kWh                  |", timeRange, price.getSEK_per_kWh()));
+    }
+
+    print("|                                                                |");
+    print("|              All prices shown in chronological order           |");
+    print("|                       [1] Back to main menu                    |");
+    print("|                       [2] Exit program                         |");
+    print("|                                                                |");
+    print("|========================[Select Option]=========================|");
+    print("|");
+    print("|");
+    System.out.print("|~~~~~>:");
+  }
+
+  //CSV import display menu
+  public static void csvImportMenu(String userName, String zoneName, int dataPoints, double totalConsumption, double totalCost) {
+    spacer(20);
+    print("|==============[CSV Results for " + userName + " in " + zoneName + "]===============|");
+    print("|                                                                |");
+    print(String.format("|    Hours processed: %d                                      |", dataPoints));
+    print(String.format("|    Total consumption: %.2f kWh                              |", totalConsumption));
+    print(String.format("|    Total cost: %.2f SEK                                     |", totalCost));
+    print("|                                                                |");
+    print("|                   [1] Back to main menu                        |");
+    print("|                   [2] Exit program                             |");
+    print("|                                                                |");
+    print("|========================[Select Option]=========================|");
+    print("|");
+    print("|");
+    System.out.print("|~~~~~>:");
+  }  // -----------func to print spacer vertically-----------
   public static void spacer(int space) {
     for (int i = 0; i < space; i++) {
       System.out.println("                                :");
