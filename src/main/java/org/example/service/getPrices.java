@@ -24,12 +24,12 @@ public class GetPrices {
   public String findAll() {
     try {
       HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(URL))
-        .GET()
-        .build();
+          .uri(URI.create(URL))
+          .GET()
+          .build();
 
       HttpResponse<String> response = client.send(request,
-        HttpResponse.BodyHandlers.ofString());
+          HttpResponse.BodyHandlers.ofString());
 
       if (response.statusCode() == 200) {
         return response.body();
@@ -45,16 +45,17 @@ public class GetPrices {
   public List<PriceData> findAllPrices() {
     try {
       HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(URL))
-        .GET()
-        .build();
+          .uri(URI.create(URL))
+          .GET()
+          .build();
 
       HttpResponse<String> response = client.send(request,
-        HttpResponse.BodyHandlers.ofString());
+          HttpResponse.BodyHandlers.ofString());
 
       if (response.statusCode() == 200) {
-        //------------Parse JSON into List of PriceData objects---------
-        TypeReference<List<PriceData>> typeReference = new TypeReference<List<PriceData>>() {};
+        // ------------Parse JSON into List of PriceData objects---------
+        TypeReference<List<PriceData>> typeReference = new TypeReference<List<PriceData>>() {
+        };
         return objectMapper.readValue(response.body(), typeReference);
       } else {
         throw new RuntimeException("Failed to fetch data with status code: " + response.statusCode());

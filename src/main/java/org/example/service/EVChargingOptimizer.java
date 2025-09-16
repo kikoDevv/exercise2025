@@ -1,0 +1,106 @@
+package org.example.service;
+
+import org.example.model.PriceData;
+import org.example.ui.Menu;
+import java.util.List;
+
+public class EVChargingOptimizer {
+
+  public static void showBestChargingTimes(String userName, String zoneName, String zoneId) {
+    try {
+      GetPrices service = new GetPrices();
+      List<PriceData> prices = service.findAllPrices();
+
+      if (prices.isEmpty()) {
+        System.out.println("No price data available.");
+        return;
+      }
+
+      // --Find best charging windows for different durations--
+      ChargingWindow best2Hour = findBestChargingWindow(prices, 2);
+      ChargingWindow best4Hour = findBestChargingWindow(prices, 4);
+      ChargingWindow best8Hour = findBestChargingWindow(prices, 8);
+
+      // --Display results using Menu--
+      Menu.evChargingMenu(userName, zoneName, best2Hour, best4Hour, best8Hour);
+
+    } catch (Exception e) {
+      System.out.println("❌ Error finding optimal charging times: " + e.getMessage());
+    }
+  }
+
+  // --Sliding window algorithm to find best charging period--
+  private static ChargingWindow findBestChargingWindow(List<PriceData> prices, int durationHours) {
+    if (prices.size() < durationHours) {
+      return null;
+    }
+
+    double minTotalCost = Double.MAX_VALUE;
+    int bestStartIndex = 0;
+
+    // Sliding window algorithm
+    for (int i = 0; i <= prices.size() - durationHours; i++) {
+      double windowCost = 0.0;
+
+      // Calculate total cost for current window
+      for (int j = i; j < i + durationHours; j++) {
+        windowCost += prices.get(j).getSEK_per_kWh();
+      }
+
+      // Update best window if current is cheaper
+      if (windowCost < minTotalCost) {
+        minTotalCost = windowCost;
+        bestStartIndex = i;
+      }
+    }
+
+    //--Create result object--
+    PriceData startHour = prices.get(bestStartIndex);
+    PriceData endHour = prices.get(bestStartIndex + durationHours - 1);
+    double averageCost = minTotalCost / durationHours;
+
+    return new ChargingWindow(
+        startHour.getTime_start().substring(11, 16),
+        endHour.getTime_end().substring(11, 16),
+        averageCost,
+        minTotalCost,
+        durationHours);
+  }
+
+  // --Inner class to hold charging window results--
+  public static class ChargingWindow {
+    private final String startTime;
+    private final String endTime;
+    private final double averageCost;
+    private final double totalCost;
+    private final int duration;
+
+    public ChargingWindow(String startTime, String endTime, double averageCost, double totalCost, int duration) {
+      this.startTime = startTime;
+      this.endTime = endTime;
+      this.averageCost = averageCost;
+      this.totalCost = totalCost;
+      this.duration = duration;
+    }
+
+    public String getStartTime() {
+      return startTime;
+    }
+
+    public String getEndTime() {
+      return endTime;
+    }
+
+    public double getAverageCost() {
+      return averageCost;
+    }
+
+    public double getTotalCost() {
+      return totalCost;
+    }
+
+    public int getDuration() {
+      return duration;
+    }
+  }
+}
