@@ -27,7 +27,7 @@ public class Menu {
 
   // Zone menu
   public static void zoneMenu(String userName) {
-    //--dynamic spacing header--
+    // --dynamic spacing header--
     printDynamicHeader("Welcome " + userName);
     print("|                                                                |");
     print("|           Please select one of the area below                  |");
@@ -169,7 +169,8 @@ public class Menu {
   }
 
   // All hourly prices menu
-  public static void allHourlyPricesMenu(String userName, String zoneName, java.util.List<org.example.model.PriceData> prices) {
+  public static void allHourlyPricesMenu(String userName, String zoneName,
+      java.util.List<org.example.model.PriceData> prices) {
     spacer(20);
     printDynamicHeader("All Hourly Prices for " + userName + " in " + zoneName);
     print("|                                                                |");
@@ -179,7 +180,8 @@ public class Menu {
     for (int i = 0; i < Math.min(prices.size(), 24); i++) {
       org.example.model.PriceData price = prices.get(i);
       String timeRange = price.getTime_start().substring(11, 16) + "-" + price.getTime_end().substring(11, 16);
-      print(String.format("|                   %s: %.4f SEK/kWh                  |", timeRange, price.getSEK_per_kWh()));
+      print(
+          String.format("|                   %s: %.4f SEK/kWh                  |", timeRange, price.getSEK_per_kWh()));
     }
 
     print("|                                                                |");
@@ -193,8 +195,9 @@ public class Menu {
     System.out.print("|~~~~~>:");
   }
 
-  //CSV import display menu
-  public static void csvImportMenu(String userName, String zoneName, int dataPoints, double totalConsumption, double totalCost) {
+  // CSV import display menu
+  public static void csvImportMenu(String userName, String zoneName, int dataPoints, double totalConsumption,
+      double totalCost) {
     spacer(20);
     printDynamicHeader("CSV Results for " + userName + " in " + zoneName);
     print("|                                                                |");
@@ -209,7 +212,8 @@ public class Menu {
     print("|");
     print("|");
     System.out.print("|~~~~~>:");
-  }  // -----------func to print spacer vertically-----------
+  } // -----------func to print spacer vertically-----------
+
   public static void spacer(int space) {
     for (int i = 0; i < space; i++) {
       System.out.println("                                :");

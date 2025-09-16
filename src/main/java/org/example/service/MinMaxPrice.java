@@ -48,7 +48,7 @@ public class MinMaxPrice {
           priceDifference);
 
     } catch (Exception e) {
-      System.out.println("❌ Error finding min/max prices: " + e.getMessage());
+      System.out.println("Error finding min/max prices: " + e.getMessage());
     }
   }
 }

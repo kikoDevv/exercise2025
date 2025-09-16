@@ -25,7 +25,7 @@ public class EVChargingOptimizer {
       Menu.evChargingMenu(userName, zoneName, best2Hour, best4Hour, best8Hour);
 
     } catch (Exception e) {
-      System.out.println("❌ Error finding optimal charging times: " + e.getMessage());
+      System.out.println("Error finding optimal charging times: " + e.getMessage());
     }
   }
 

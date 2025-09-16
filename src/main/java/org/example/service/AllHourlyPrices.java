@@ -20,7 +20,7 @@ public class AllHourlyPrices {
             Menu.allHourlyPricesMenu(userName, zoneName, prices);
 
         } catch (Exception e) {
-            System.out.println("❌ Error fetching hourly prices: " + e.getMessage());
+            System.out.println("Error fetching hourly prices: " + e.getMessage());
         }
     }
 }
