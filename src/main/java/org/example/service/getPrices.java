@@ -37,7 +37,7 @@ public class GetPrices {
       List<PriceData> todayPrices = fetchPricesForDate(today);
       allPrices.addAll(todayPrices);
 
-      //--get tommorrws price if availble--
+      // --get tommorrws price if availble--
       try {
         LocalDate tomorrow = today.plusDays(1);
         List<PriceData> tomorrowPrices = fetchPricesForDate(tomorrow);
@@ -57,7 +57,7 @@ public class GetPrices {
     try {
       String dateStr = date.format(DateTimeFormatter.ofPattern("MM-dd"));
       String url = String.format("https://www.elprisetjustnu.se/api/v1/prices/%d/%s_%s.json",
-                                 date.getYear(), dateStr, zoneId);
+          date.getYear(), dateStr, zoneId);
 
       HttpRequest request = HttpRequest.newBuilder()
           .uri(URI.create(url))
@@ -68,7 +68,8 @@ public class GetPrices {
           HttpResponse.BodyHandlers.ofString());
 
       if (response.statusCode() == 200) {
-        TypeReference<List<PriceData>> typeReference = new TypeReference<List<PriceData>>() {};
+        TypeReference<List<PriceData>> typeReference = new TypeReference<List<PriceData>>() {
+        };
         return objectMapper.readValue(response.body(), typeReference);
       } else {
         throw new RuntimeException("Failed to fetch data for " + date + " with status code: " + response.statusCode());
@@ -79,13 +80,13 @@ public class GetPrices {
     }
   }
 
-  //--Legacy method for backward compatibility--
+  // --Legacy method for backward compatibility--
   public String findAll() {
     try {
       LocalDate today = LocalDate.now();
       String dateStr = today.format(DateTimeFormatter.ofPattern("MM-dd"));
       String url = String.format("https://www.elprisetjustnu.se/api/v1/prices/%d/%s_%s.json",
-                                 today.getYear(), dateStr, zoneId);
+          today.getYear(), dateStr, zoneId);
 
       HttpRequest request = HttpRequest.newBuilder()
           .uri(URI.create(url))

@@ -27,8 +27,8 @@ public class Menu {
 
   // Zone menu
   public static void zoneMenu(String userName) {
-
-    print("|=====================[Welcome " + userName + "]=====================|");
+    //--dynamic spacing header--
+    printDynamicHeader("Welcome " + userName);
     print("|                                                                |");
     print("|           Please select one of the area below                  |");
     print("|                                                                |");
@@ -46,7 +46,7 @@ public class Menu {
 
   // Main menu
   public static void mainMenu(String userName, String area) {
-    print("|=====================[Menu for " + userName + " in " + area + "]=====================|");
+    printDynamicHeader("Menu for " + userName + " in " + area);
     print("|                                                                |");
     print("|          Please select one of the following option             |");
     print("|                                                                |");
@@ -57,7 +57,7 @@ public class Menu {
     print("|     [5] Import consumption data from CSV file                  |");
     print("|     [6] Exit program                                           |");
     print("|                                                                |");
-    print("|=======================[Select option]========================|");
+    print("|========================[Select option]=========================|");
     print("|");
     print("|");
     System.out.print("|~~~~~>:");
@@ -67,7 +67,7 @@ public class Menu {
   public static void averagePriceMenu(String userName, String zoneName, String zoneId,
       int totalHours, double averagePrice) {
     spacer(20);
-    print("|============[Mean price for " + userName + " in " + zoneName + " area" + "]=============|");
+    printDynamicHeader("Mean price for " + userName + " in " + zoneName + " area");
     print("|                                                                |");
     print("|              AVERAGE PRICE ANALYSIS IS READY                   |");
     print("|                                                                |");
@@ -82,8 +82,8 @@ public class Menu {
       print("|       Today has moderate electricity prices.                   |");
     }
     print("|                                                                |");
-    print("|       [1] Restart from the begining                            |");
-    print("|       [2] close the program                                    |");
+    print("|                      [1] Back to main menu                     |");
+    print("|                      [2] close the program                     |");
     print("|                                                                |");
     print("|========================[Select Option]=========================|");
     print("|");
@@ -97,7 +97,7 @@ public class Menu {
       double expensivePrice, String expensiveStart, String expensiveEnd,
       double priceDifference) {
     spacer(20);
-    print("|===============[Price Analysis for " + userName + " in " + zoneName + "]================|");
+    printDynamicHeader("Price Analysis for " + userName + " in " + zoneName);
     print("|                                                                |");
     print("|              CHEAPEST AND MOST EXPENSIVE HOURS                 |");
     print("|                                                                |");
@@ -127,7 +127,7 @@ public class Menu {
       org.example.service.EVChargingOptimizer.ChargingWindow best4Hour,
       org.example.service.EVChargingOptimizer.ChargingWindow best8Hour) {
     spacer(20);
-    print("|============[EV Charging Optimizer for " + userName + " in " + zoneName + "]=============|");
+    printDynamicHeader("EV Charging Optimizer for " + userName + " in " + zoneName);
     print("|                                                                  |");
     print("|               BEST CHARGING TIMES FOR YOUR EV                    |");
     print("|                                                                  |");
@@ -169,7 +169,7 @@ public class Menu {
   // All hourly prices menu
   public static void allHourlyPricesMenu(String userName, String zoneName, java.util.List<org.example.model.PriceData> prices) {
     spacer(20);
-    print("|============[All Hourly Prices for " + userName + " in " + zoneName + "]=============|");
+    printDynamicHeader("All Hourly Prices for " + userName + " in " + zoneName);
     print("|                                                                |");
     print("|               TODAY'S HOURLY ELECTRICITY PRICES                |");
     print("|                                                                |");
@@ -194,7 +194,7 @@ public class Menu {
   //CSV import display menu
   public static void csvImportMenu(String userName, String zoneName, int dataPoints, double totalConsumption, double totalCost) {
     spacer(20);
-    print("|==============[CSV Results for " + userName + " in " + zoneName + "]===============|");
+    printDynamicHeader("CSV Results for " + userName + " in " + zoneName);
     print("|                                                                |");
     print(String.format("|    Hours processed: %d                                      |", dataPoints));
     print(String.format("|    Total consumption: %.2f kWh                              |", totalConsumption));
@@ -213,5 +213,19 @@ public class Menu {
       System.out.println("                                :");
     }
     System.out.println();
+  }
+
+  // -----------func to create dynamic header-----------
+  private static void printDynamicHeader(String headerText) {
+    int headerLength = headerText.length();
+    System.out.print("|");
+    for (int i = 0; i < 30 - headerLength / 2; i++) {
+      System.out.print("=");
+    }
+    System.out.print("[" + headerText + "]");
+    for (int i = 0; i < 32 - headerLength / 2; i++) {
+      System.out.print("=");
+    }
+    System.out.println("|");
   }
 }
