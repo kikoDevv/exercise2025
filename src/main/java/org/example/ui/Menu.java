@@ -61,6 +61,65 @@ public class Menu {
         print("|");
         System.out.print("|~~~~~>:");
     }
+
+    //Average price display menu
+    public static void averagePriceMenu(String userName, String zoneName, String zoneId,
+                                        int totalHours, double averagePrice) {
+        spacer(20);
+        print("|============[Mean price for " + userName + " in " + zoneName + " area" +"]=============|");
+        print("|                                                                |");
+        print("|              AVERAGE PRICE ANALYSIS IS READY                   |");
+        print("|                                                                |");
+        print("|       Zone  " + zoneName +" "+ zoneId  + "                                |");
+        print("|       The total hours analyzed is "+ totalHours + "                           |");
+        print(String.format("|       The average price in this time zone is: %.4f SEK/kWh   |", averagePrice));
+        if (averagePrice < 0.20) {
+            print("|       Great! Today has relatively low electricity prices.      |");
+        } else if (averagePrice > 0.50) {
+            print("|       Today has relatively high electricity prices. Consider delaying energy-intensive activities  |");
+        } else {
+            print("|            Today has moderate electricity prices.  |");
+        }
+        print("|                                                                |");
+        print("|       [1] Restart from the begining                            |");
+        print("|       [2] close the program                                    |");
+        print("|                                                                |");
+        print("|========================[Select Option]=========================|");
+        print("|");
+        print("|");
+        System.out.print("|~~~~~>:");
+    }
+
+    //Min/Max menu
+    public static void minMaxPriceMenu(String userName, String zoneName,
+                                       double cheapestPrice, String cheapestStart, String cheapestEnd,
+                                       double expensivePrice, String expensiveStart, String expensiveEnd,
+                                       double priceDifference) {
+        spacer(20);
+        print("|===============[Price Analysis for " + userName + " in " + zoneName + "]================|");
+        print("|                                                                |");
+        print("|              CHEAPEST AND MOST EXPENSIVE HOURS                 |");
+        print("|                                                                |");
+        print(String.format("|            ⬇️  CHEAPEST HOUR: %.4f SEK/kWh                    |", cheapestPrice));
+        print(String.format("|                Time: %s to %s                            |", cheapestStart, cheapestEnd));
+        print(String.format("|            ⬆️  MOST EXPENSIVE HOUR: %.4f SEK kWh              |", expensivePrice));
+        print(String.format("|                Time: %s to %s                            |", expensiveStart, expensiveEnd));
+        print(String.format("|            ⚖️  PRICE DIFFERENCE: %.4f SEK/kWh                 |", priceDifference));
+        print("|                                                                |");
+        if (priceDifference > 0.30) {
+            print("|     💡 TIP: Consider timing energy-intensive activities!       |");
+        } else {
+            print("|    INFO: Price variation is relatively small today.          |");
+        }
+        print("|                   [1] Back to main menu                        |");
+        print("|                   [2] Exit program                             |");
+        print("|                                                                |");
+        print("|========================[Select Option]=========================|");
+        print("|");
+        print("|");
+        System.out.print("|~~~~~>:");
+    }
+
     //-----------func to print spacer vertically-----------
     public static void spacer(int space) {
       for (int i = 0; i < space; i++) {

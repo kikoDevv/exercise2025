@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.service.AveragePrice;
+import org.example.service.MinMaxPrice;
 import org.example.ui.Menu;
 import java.util.Scanner;
 
@@ -46,7 +47,13 @@ public class App {
                     }
                     break;
                 case 2:
-                    System.out.println("Feature coming soon: Scout cheapest and most expensive prices");
+                    //--Find cheapest and most expensive hours--
+                    MinMaxPrice.showMinMaxPrices(userName, zoneNames[selectedZone], zoneIds[selectedZone]);
+                    averageMenuOption = scanner.nextInt();
+                    scanner.nextLine(); 
+                    if (averageMenuOption == 2) {
+                        appIsRunning = false;
+                    }
                     break;
                 case 3:
                     System.out.println("Feature coming soon: Best EV charging time");
