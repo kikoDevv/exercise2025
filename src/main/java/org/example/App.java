@@ -12,20 +12,22 @@ public class App {
 
         String userName;
         int selectedZone = 0;
+        int averageMenuOption = 0;
         int selectedMainMenu = 0;
-        String[] zoneIds = {"", "SE1", "SE2", "SE3", "SE4"};
+        String[] zoneIds = {"", "SE3", "SE1", "SE2", "SE4"};
         String[] zoneNames = {"", "Stockholm", "Luleå", "Sundsvall", "Malmö"};
-        //------------------Root----------------------
+
+        //--user name menu--
+        Menu.spacer(20);
+        Menu.userNameMenu();
+        userName = scanner.nextLine();
+
         while (appIsRunning) {
-            //--user name menu--
-            Menu.spacer(20);
-            Menu.userNameMenu();
-            userName = scanner.nextLine();
-            //--zone menu---
-            Menu.spacer(20);
-            Menu.zoneMenu(userName);
-            selectedZone = scanner.nextInt();
-            scanner.nextLine();
+        //--zone menu---
+        Menu.spacer(20);
+        Menu.zoneMenu(userName);
+        selectedZone = scanner.nextInt();
+        scanner.nextLine();
             //--Main menu--
             Menu.spacer(20);
             Menu.mainMenu(userName, zoneNames[selectedZone]);
@@ -35,8 +37,13 @@ public class App {
             //------Handle user selection----
             switch (selectedMainMenu) {
                 case 1:
-                    // Show today's average electricity cost for 24H period
+                    //--Show today's average electricity cost for 24H period--
                     AveragePrice.showAveragePrice(userName, zoneNames[selectedZone], zoneIds[selectedZone]);
+                    averageMenuOption = scanner.nextInt();
+                    scanner.nextLine();
+                    if (averageMenuOption == 2) {
+                        appIsRunning = false;
+                    }
                     break;
                 case 2:
                     System.out.println("Feature coming soon: Scout cheapest and most expensive prices");
@@ -56,12 +63,6 @@ public class App {
                     break;
                 default:
                     System.out.println("Invalid option. Please select a number between 1-6.");
-            }
-
-            // Pause before showing menu again (unless user chose to exit)
-            if (appIsRunning) {
-                System.out.println("\nPress Enter to continue...");
-                scanner.nextLine();
             }
         }
 
