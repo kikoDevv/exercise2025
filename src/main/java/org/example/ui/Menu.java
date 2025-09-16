@@ -1,5 +1,7 @@
 package org.example.ui;
 
+import org.example.util.TimeUtils;
+
 public class Menu {
   // ----------func to print-------------
   public static void print(String message) {
@@ -179,7 +181,7 @@ public class Menu {
 
     for (int i = 0; i < Math.min(prices.size(), 24); i++) {
       org.example.model.PriceData price = prices.get(i);
-      String timeRange = price.getTime_start().substring(11, 16) + "-" + price.getTime_end().substring(11, 16);
+      String timeRange = TimeUtils.toHHmm(price.getTime_start()) + "-" + TimeUtils.toHHmm(price.getTime_end());
       print(
           String.format("|                   %s: %.4f SEK/kWh                  |", timeRange, price.getSEK_per_kWh()));
     }

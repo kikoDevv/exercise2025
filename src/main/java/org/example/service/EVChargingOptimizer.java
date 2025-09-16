@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.model.PriceData;
 import org.example.ui.Menu;
+import org.example.util.TimeUtils;
 import java.util.List;
 
 public class EVChargingOptimizer {
@@ -60,8 +61,8 @@ public class EVChargingOptimizer {
     double averageCost = minTotalCost / durationHours;
 
     return new ChargingWindow(
-        startHour.getTime_start().substring(11, 16),
-        endHour.getTime_end().substring(11, 16),
+        TimeUtils.toHHmm(startHour.getTime_start()),
+        TimeUtils.toHHmm(endHour.getTime_end()),
         averageCost,
         minTotalCost,
         durationHours);

@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.model.PriceData;
 import org.example.ui.Menu;
+import org.example.util.TimeUtils;
 import java.util.List;
 
 public class MinMaxPrice {
@@ -40,11 +41,11 @@ public class MinMaxPrice {
           userName,
           zoneName,
           cheapestHour.getSEK_per_kWh(),
-          cheapestHour.getTime_start().substring(11, 16),
-          cheapestHour.getTime_end().substring(11, 16),
+          TimeUtils.toHHmm(cheapestHour.getTime_start()),
+          TimeUtils.toHHmm(cheapestHour.getTime_end()),
           expensiveHour.getSEK_per_kWh(),
-          expensiveHour.getTime_start().substring(11, 16),
-          expensiveHour.getTime_end().substring(11, 16),
+          TimeUtils.toHHmm(expensiveHour.getTime_start()),
+          TimeUtils.toHHmm(expensiveHour.getTime_end()),
           priceDifference);
 
     } catch (Exception e) {
