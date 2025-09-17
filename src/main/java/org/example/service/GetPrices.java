@@ -8,7 +8,10 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,9 @@ public class GetPrices {
   }
 
   public GetPrices(String zoneId) {
-    this.client = HttpClient.newHttpClient();
+    this.client = HttpClient.newBuilder()
+        .connectTimeout(Duration.ofSeconds(5))
+        .build();
     this.objectMapper = new ObjectMapper();
     this.zoneId = zoneId;
   }
@@ -36,7 +41,8 @@ public class GetPrices {
 
     try {
       // Get today's prices
-      LocalDate today = LocalDate.now();
+      ZoneId SE = ZoneId.of("Europe/Stockholm");
+      LocalDate today = ZonedDateTime.now(SE).toLocalDate();
       List<PriceData> todayPrices = fetchPricesForDate(today);
       allPrices.addAll(todayPrices);
 
@@ -64,6 +70,8 @@ public class GetPrices {
 
       HttpRequest request = HttpRequest.newBuilder()
           .uri(URI.create(url))
+          .timeout(Duration.ofSeconds(10))
+          .header("User-Agent", "Electricity-Scout/1.0 (+https://github.com/fungover/exercise2025)")
           .GET()
           .build();
 
@@ -86,13 +94,16 @@ public class GetPrices {
   // --Legacy method for backward compatibility--
   public String findAll() {
     try {
-      LocalDate today = LocalDate.now();
+      ZoneId SE = ZoneId.of("Europe/Stockholm");
+      LocalDate today = ZonedDateTime.now(SE).toLocalDate();
       String dateStr = today.format(DateTimeFormatter.ofPattern("MM-dd"));
       String url = String.format(API_URL_PATTERN,
           today.getYear(), dateStr, zoneId);
 
       HttpRequest request = HttpRequest.newBuilder()
           .uri(URI.create(url))
+          .timeout(Duration.ofSeconds(10))
+          .header("User-Agent", "Electricity-Scout/1.0 (+https://github.com/fungover/exercise2025)")
           .GET()
           .build();
 
