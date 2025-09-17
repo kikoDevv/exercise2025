@@ -3,13 +3,17 @@ package org.example.service;
 import org.example.model.PriceData;
 import org.example.ui.Menu;
 import java.util.List;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 public class AllHourlyPrices {
 
     public static void showAllHourlyPrices(String userName, String zoneName, String zoneId) {
         try {
             GetPrices service = new GetPrices(zoneId);
-            List<PriceData> prices = service.findAllPrices();
+            LocalDate todaySE = ZonedDateTime.now(ZoneId.of("Europe/Stockholm")).toLocalDate();
+            List<PriceData> prices = service.findPricesForDate(todaySE);
 
             if (prices.isEmpty()) {
                 System.out.println("No price data available.");

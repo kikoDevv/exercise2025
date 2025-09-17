@@ -3,6 +3,8 @@ package org.example.service;
 import org.example.model.PriceData;
 import org.example.ui.Menu;
 import org.example.util.TimeUtils;
+import java.time.OffsetDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 public class EVChargingOptimizer {
@@ -32,11 +34,22 @@ public class EVChargingOptimizer {
 
   // --Sliding window algorithm to find best charging period--
   private static ChargingWindow findBestChargingWindow(List<PriceData> prices, int durationHours) {
+    // Input validation
+    if (durationHours <= 0) {
+      throw new IllegalArgumentException("Duration must be greater than 0, got: " + durationHours);
+    }
+
     if (prices.size() < durationHours) {
       return null;
     }
 
-    double minTotalCost = Double.MAX_VALUE;
+    prices.sort(Comparator.comparing((PriceData price) -> {
+      try {
+        return OffsetDateTime.parse(price.getTime_start());
+      } catch (Exception e) {
+        return OffsetDateTime.MIN;
+      }
+    }));    double minTotalCost = Double.MAX_VALUE;
     int bestStartIndex = 0;
 
     // Sliding window algorithm

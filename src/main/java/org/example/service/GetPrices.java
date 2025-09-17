@@ -10,10 +10,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GetPrices {
@@ -55,6 +57,16 @@ public class GetPrices {
         System.out.println("Tomorrow's prices not yet available.");
       }
 
+      // Sort by timestamp to ensure chronological order
+      allPrices.sort(Comparator.comparing((PriceData price) -> {
+        try {
+          return OffsetDateTime.parse(price.getTime_start());
+        } catch (Exception e) {
+          // Fallback to string comparison if parsing fails
+          return OffsetDateTime.MIN;
+        }
+      }));
+
       return allPrices;
 
     } catch (Exception e) {
@@ -62,7 +74,7 @@ public class GetPrices {
     }
   }
 
-  private List<PriceData> fetchPricesForDate(LocalDate date) {
+  public List<PriceData> fetchPricesForDate(LocalDate date) {
     try {
       String dateStr = date.format(DateTimeFormatter.ofPattern("MM-dd"));
       String url = String.format(API_URL_PATTERN,
@@ -89,6 +101,10 @@ public class GetPrices {
     } catch (Exception e) {
       throw new RuntimeException("Error fetching price data for " + date + ": " + e.getMessage(), e);
     }
+  }
+
+  public List<PriceData> findPricesForDate(LocalDate date) {
+    return fetchPricesForDate(date);
   }
 
   // --Legacy method for backward compatibility--
