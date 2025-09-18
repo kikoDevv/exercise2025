@@ -36,8 +36,6 @@ public class Maps {
         Funcs.spacer(20);
         Funcs.print("═══════════════════════════════════════════════════════════════════════");
         Funcs.print("                    🏰 CLIMB TO VICTORY QUEST 🏰                       ");
-        Funcs.print("═══════════════════════════════════════════════════════════════════════");
-         Funcs.print("═══════════════════════════════════════════════════════════════════════");
         Funcs.print("🎮 OBJECTIVE: Climb from SAFE HOUSE (🏕️ 🔥) to CASTLE (🏰) to WIN! 🏆");
         Funcs.print("⚔️  BEWARE: Guards, monsters and locked doors block your path to victory!");
         Funcs.print("🗝️  COLLECT: Keys and treasures to help your journey upward!");
@@ -87,9 +85,9 @@ public class Maps {
             Funcs.print("     │" + leftEnv + "│    │" + centerEnv + "│    │" + rightEnv + "│");
         } else {
             Funcs.print("     │ MOUNTAIN│    │ BRIDGE  │    │ FOREST  │");
-            Funcs.print("     │  ⛰️🏔️⛰️    │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
-            Funcs.print("     │  🏔️💎🏔️   ├────┤ 🚪🔒🚪  ├────│    ⛺️   │");
-            Funcs.print("     │  ⛰️💎⛰️   │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
+            Funcs.print("     │ ⛰️ 🏔️ ⛰️   │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
+            Funcs.print("     │ 🏔️ 💎🏔️   ├────┤ 🚪🔒🚪  ├────│    ⛺️   │");
+            Funcs.print("     │ ⛰️ 💎⛰️   │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
         }
         Funcs.print("     └─────────┘    └────┬────┘    └─────────┘");
         Funcs.print("                         ↑ LOCKED BRIDGE");
@@ -103,26 +101,26 @@ public class Maps {
 
             String leftIcon = (playerPosition == 0) ? "   😎    " : "  ⚔️💀⚔️   ";
             String centerIcon = (playerPosition == 1) ? "   😎    " : "  🏘️🏘️🏘️    ";
-            String rightIcon = (playerPosition == 2) ? "   😎    " : " ⛰️ 🏔️ ⛰️   ";
+            String rightIcon = (playerPosition == 2) ? "   😎    " : " 🌊 🌊 🌊";
 
             Funcs.print("     │" + leftIcon + "├────┤" + centerIcon + "├────│" + rightIcon + "│");
 
             String leftFeet = (playerPosition == 0) ? "  <) )   " : "💀 🔑 💀 ";
             String centerFeet = (playerPosition == 1) ? "  <) )   " : "🏘️ 🗡️🗡️  🏘️  ";
-            String rightFeet = (playerPosition == 2) ? "  <) )   " : " ⛰️ 🩸⛰️   ";
+            String rightFeet = (playerPosition == 2) ? "  <) )   " : " 🌊🩸🐠🌊";
 
             Funcs.print("     │" + leftFeet + "│    │" + centerFeet + "│    │" + rightFeet + "│");
 
             String leftEnvVillage = (playerPosition == 0) ? "   /\\    " : "  ⚔️💀⚔️   ";
             String centerEnvVillage = (playerPosition == 1) ? "   /\\    " : "  🏘️🏘️🏘️    ";
-            String rightEnvVillage = (playerPosition == 2) ? "   /\\    " : " ⛰️ 🏔️ ⛰️   ";
+            String rightEnvVillage = (playerPosition == 2) ? "   /\\    " : " 🌊 🌊 🌊";
 
             Funcs.print("     │" + leftEnvVillage + "│    │" + centerEnvVillage + "│    │" + rightEnvVillage + "│");
         } else {
             Funcs.print("     │ DUNGEON │    │ VILLAGE │    │LAKE+HEAL│");
-            Funcs.print("     │  ⚔️💀⚔️   │    │  🏘️🏘️🏘️    │    │ ⛰️ 🏔️ ⛰️   │");
-            Funcs.print("     │💀 🔑 💀 ├────┤🏘️ 🗡️🗡️  🏘️  ├────│ ⛰️ 🩸⛰️   │");
-            Funcs.print("     │  ⚔️💀⚔️   │    │  🏘️🏘️🏘️    │    │ ⛰️ 🏔️ ⛰️   │");
+            Funcs.print("     │  ⚔️💀⚔️   │    │  🏘️🏘️🏘️    │    │ 🌊 🌊 🌊│");
+            Funcs.print("     │💀 🔑 💀 ├────┤🏘️ 🗡️🗡️  🏘️  ├────│ 🌊🩸🐠🌊│");
+            Funcs.print("     │  ⚔️💀⚔️   │    │  🏘️🏘️🏘️    │    │ 🌊 🌊 🌊│");
         }
         Funcs.print("     └─────────┘    └────┬────┘    └─────────┘");
         Funcs.print("                         │");
