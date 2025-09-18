@@ -2,6 +2,8 @@ package org.example.game;
 
 import org.example.entities.Player;
 import org.example.map.Maps;
+import org.example.utils.Funcs;
+
 import java.util.Scanner;
 
 public class Game {
@@ -14,7 +16,7 @@ public class Game {
         {"Home", "Home", "Home"},
         {"Dungeon", "Village", "Lake"},
         {"Mountain", "Bridge", "Forest"},
-        {"Castle", "Castle", "Castle"}      
+        {"Castle", "Castle", "Castle"}
     };
 
     //-- area descriptions and actions --
@@ -22,10 +24,10 @@ public class Game {
         {"🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
          "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
          "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!"},
-        {"⚔️ Dark Dungeon filled with skeletons! Collect the golden key here! 🔑",
+        {"⚔️ Dark Dungeon filled danger and rewards! Collect the golden key here, used to open the bridge gate! 🔑",
          "🏘️ Peaceful Village with friendly people. Get weapons and supplies! 🗡️",
          "💧 Healing Lake with magical waters. Restore your health here! 🩸"},
-        {"⛰️ Treacherous Mountain peaks! Collect precious diamonds! 💎",
+        {"⛰️ Treacherous Mountain peaks! Collect precious diamonds which some guards are intressted in💎",
          "🌉 Mysterious Bridge guarded by locks. Use your key to pass! 🚪🔒",
          "🌲 Enchanted Forest with hidden treasures. Find camping supplies! ⛺"},
         {"🏰 Victory! You've reached the Castle! You are now the ruler! 👑",
@@ -42,7 +44,7 @@ public class Game {
 
     public void start() {
         System.out.println("🎮 Welcome to Climb to Victory Quest!");
-        System.out.println("Commands: up (climb), down (descend), left, right, quit");
+        System.out.println("Commands: up, down, left, right, quit");
         System.out.println();
 
         while (running) {
@@ -50,12 +52,12 @@ public class Game {
             Maps.gameMap(player.getY(), player.getX());
 
             // show current location and description
-            String currentArea = areaNames[player.getY()][player.getX()];
+            // String currentArea = areaNames[player.getY()][player.getX()];
             String description = areaDescriptions[player.getY()][player.getX()];
 
-            System.out.println("📍 You are currently at: " + currentArea + " (Level " + (player.getY() + 1) + ")");
-            System.out.println("ℹ️  " + description);
-            System.out.println();
+
+            Funcs.print("|----------------------------------------INFO----------------------------------------|");
+            System.out.println("| " + description);
 
             // check for victory
             if (player.getY() == 3) {
@@ -65,7 +67,10 @@ public class Game {
             }
 
             //- get user input --
-            System.out.print("What to do~~: ");
+            Funcs.print("| 🎮COMMANDS: up, down, left, right, quit                                            |");
+            Funcs.print("|----------------------------------------INFO----------------------------------------|");
+            System.out.print("|~~>: ");
+
             String command = scanner.nextLine().toLowerCase().trim();
 
             processCommand(command);

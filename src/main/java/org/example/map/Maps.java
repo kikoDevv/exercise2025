@@ -4,11 +4,16 @@ import org.example.utils.Funcs;
 
 public class Maps {
     public static void gameMap(int playerLevel, int playerPosition) {
-        Funcs.spacer(2);
+        Funcs.spacer(20);
         Funcs.print("═══════════════════════════════════════════════════════════════════════");
         Funcs.print("                    🏰 CLIMB TO VICTORY QUEST 🏰                       ");
         Funcs.print("═══════════════════════════════════════════════════════════════════════");
-        Funcs.print("");
+         Funcs.print("═══════════════════════════════════════════════════════════════════════");
+        Funcs.print("🎮 OBJECTIVE: Climb from SAFE HOUSE (🏕️ 🔥) to CASTLE (🏰) to WIN! 🏆");
+        Funcs.print("⚔️  BEWARE: Guards, monsters and locked doors block your path to victory!");
+        Funcs.print("🗝️  COLLECT: Keys and treasures to help your journey upward!");
+        Funcs.print("🎮 COMMANDS: up (climb), down (descend), left, right, quit");
+        Funcs.print("═══════════════════════════════════════════════════════════════════════");
 
         //-- LEVEL 4 VICTORY  Level 3 in array --
         Funcs.print("                    ┌─────────┐  ");
@@ -42,7 +47,7 @@ public class Maps {
 
             String leftFeet = (playerPosition == 0) ? "  <) )   " : "  🏔️💎🏔️   ";
             String centerFeet = (playerPosition == 1) ? "  <) )   " : " 🚪🔒🚪  ";
-            String rightFeet = (playerPosition == 2) ? "  <) )   " : "    ⛺️  ";
+            String rightFeet = (playerPosition == 2) ? "  <) )   " : "    ⛺️   ";
 
             Funcs.print("     │" + leftFeet + "│    │" + centerFeet + "│    │" + rightFeet + "│");
 
@@ -54,7 +59,7 @@ public class Maps {
         } else {
             Funcs.print("     │ MOUNTAIN│    │ BRIDGE  │    │ FOREST  │");
             Funcs.print("     │  ⛰️🏔️⛰️    │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
-            Funcs.print("     │  🏔️💎🏔️   ├────┤ 🚪🔒🚪  ├────│    ⛺️    │");
+            Funcs.print("     │  🏔️💎🏔️   ├────┤ 🚪🔒🚪  ├────│    ⛺️   │");
             Funcs.print("     │  ⛰️💎⛰️   │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
         }
         Funcs.print("     └─────────┘    └────┬────┘    └─────────┘");
@@ -92,14 +97,11 @@ public class Maps {
         }
         Funcs.print("     └─────────┘    └────┬────┘    └─────────┘");
         Funcs.print("                         │");
-        Funcs.print("                         │");
-        Funcs.print("                         │");
-        Funcs.print("                         │");
         Funcs.print("                         ↑ START CLIMBING");
         Funcs.print("                         │");
         Funcs.print("                         │");
-        Funcs.print("                         │");
-        Funcs.print("                         │");
+
+
 
         //-- LEVEL 1 - SAFE HOUSE START Level 0 in array --
         if (playerLevel == 0) {
@@ -119,13 +121,5 @@ public class Maps {
             Funcs.print("                    │ 🏕️ 🔥🏕️   │     ");
             Funcs.print("                    └─────────┘    ");
         }
-
-        Funcs.print("═══════════════════════════════════════════════════════════════════════");
-        Funcs.print("🎮 OBJECTIVE: Climb from SAFE HOUSE (🏕️🔥) to CASTLE (🏰) to WIN! 🏆");
-        Funcs.print("⚔️ BEWARE: Guards and monsters block your path to victory!");
-        Funcs.print("🗝️ COLLECT: Keys and treasures to help your journey upward!");
-        Funcs.print("🎮 COMMANDS: up (climb), down (descend), left, right, quit");
-        Funcs.print("═══════════════════════════════════════════════════════════════════════");
-        Funcs.spacer(2);
     }
 }
