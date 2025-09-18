@@ -101,22 +101,32 @@ public class Game {
             case "up":
             case "climb":
                 if (isValidVerticalMove(player.getY() + 1)) {
-                    player.moveDown(); // movedown increases y coordinate
+                    player.moveDown();
                     String newArea = areaNames[player.getY()][player.getX()];
                     lastActionMessage = "🔺Climbed up to " + newArea + "!";
                 } else {
-                    lastActionMessage = "❌Can't climb higher! You reached the top!";
+
+                    if (player.getY() + 1 >= 4) {
+                        lastActionMessage = "❌Can't climb higher! You reached the top!";
+                    } else {
+                        lastActionMessage = "❌Can't climb from here! You must be in the center to climb up/down!";
+                    }
                 }
                 break;
 
             case "down":
             case "descend":
                 if (isValidVerticalMove(player.getY() - 1)) {
-                    player.moveUp(); // moveup decreases y coordinate
+                    player.moveUp();
                     String newArea = areaNames[player.getY()][player.getX()];
                     lastActionMessage = "🔻 Descended to " + newArea + "!";
                 } else {
-                    lastActionMessage = "❌ Can't go lower! You are at the bottom!";
+
+                    if (player.getY() - 1 < 0) {
+                        lastActionMessage = "❌ Can't go lower! You are at the bottom!";
+                    } else {
+                        lastActionMessage = "❌Can't descend from here! You must be in the Village or Bridge center to climb up/down!";
+                    }
                 }
                 break;
 
@@ -126,7 +136,12 @@ public class Game {
                     String newArea = areaNames[player.getY()][player.getX()];
                     lastActionMessage = "⬅️ Moved left to " + newArea + "!";
                 } else {
-                    lastActionMessage = "❌ Can't go further left!";
+
+                    if (player.getX() - 1 < 0) {
+                        lastActionMessage = "❌ Can't go further left!";
+                    } else {
+                        lastActionMessage = "❌Can't move left from here! You must be in center";
+                    }
                 }
                 break;
 
@@ -136,7 +151,12 @@ public class Game {
                     String newArea = areaNames[player.getY()][player.getX()];
                     lastActionMessage = "➡️ Moved right to " + newArea + "!";
                 } else {
-                    lastActionMessage = "❌ Can't go further right!";
+
+                    if (player.getX() + 1 >= 3) {
+                        lastActionMessage = "❌ Can't go further right!";
+                    } else {
+                        lastActionMessage = "❌Can't move right from here! You must be in center to move horizontally!";
+                    }
                 }
                 break;
 
@@ -156,11 +176,23 @@ public class Game {
     }
 
     private boolean isValidVerticalMove(int level) {
-        return level >= 0 && level < 4; // 4 levels total (0-3)
+        // Check basic bounds
+        if (level < 0 || level >= 4) {
+            return false;
+        }
+
+
+
+        return player.getX() == 1;
     }
 
     private boolean isValidHorizontalMove(int position) {
-        return position >= 0 && position < 3; // 3 positions per level (0-2)
+        // Check basic bounds
+        if (position < 0 || position >= 3) {
+            return false;
+        }
+
+        return player.getY() == 1 || player.getY() == 2;  
     }
 
     private void handleCombat() {
