@@ -58,7 +58,6 @@ public class Maps {
         Funcs.print("                    │ 🏕️ 🔥🏕️   │     ");
         Funcs.print("                    └─────────┘    ");
 
-        Funcs.print("");
         Funcs.print("═══════════════════════════════════════════════════════════════════════");
         Funcs.print("🎮 OBJECTIVE: Climb from SAFE HOUSE (🏕️🔥) to CASTLE (🏰) to WIN! 🏆");
         Funcs.print("⚔️ BEWARE: Guards and monsters block your path to victory!");
