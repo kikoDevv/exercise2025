@@ -1,8 +1,37 @@
 package org.example.map;
 
 import org.example.utils.Funcs;
+import org.example.entities.Tile;
 
 public class Maps {
+    // Simple 3x3 grid for dungeon exploration
+    private static Tile[][] dungeonGrid = {
+        {Tile.createWall(), Tile.createWall(), Tile.createWall()},
+        {Tile.createFloor(), Tile.createFloor(), Tile.createFloor()},
+        {Tile.createWall(), Tile.createWall(), Tile.createWall()}
+    };
+
+    public static void displayDungeonGrid(int playerX, int playerY) {
+        System.out.println("🗺️ Dungeon Layout:");
+        for (int y = 0; y < 3; y++) {
+            System.out.print("   ");
+            for (int x = 0; x < 3; x++) {
+                if (playerY == y && playerX == x) {
+                    System.out.print("😎 ");
+                } else {
+                    System.out.print(dungeonGrid[y][x].toString() + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static Tile getDungeonTile(int x, int y) {
+        if (x >= 0 && x < 3 && y >= 0 && y < 3) {
+            return dungeonGrid[y][x];
+        }
+        return Tile.createWall(); // Return wall if out of bounds
+    }
     public static void gameMap(int playerLevel, int playerPosition) {
         Funcs.spacer(20);
         Funcs.print("═══════════════════════════════════════════════════════════════════════");
