@@ -9,15 +9,15 @@ public class Game {
     private Scanner scanner;
     private boolean running;
 
-    //-- Area names for each level and position --
+    //-- area names for each level and position --
     private String[][] areaNames = {
-        {"Home", "Home", "Home"},           // Level 0 - all positions are Home
-        {"Dungeon", "Village", "Lake"},     // Level 1 - left, center, right
-        {"Mountain", "Bridge", "Forest"},   // Level 2 - left, center, right
-        {"Castle", "Castle", "Castle"}      // Level 3 - all positions are Castle
+        {"Home", "Home", "Home"},
+        {"Dungeon", "Village", "Lake"},
+        {"Mountain", "Bridge", "Forest"},
+        {"Castle", "Castle", "Castle"}      
     };
 
-    //-- Area descriptions and actions --
+    //-- area descriptions and actions --
     private String[][] areaDescriptions = {
         {"🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
          "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
@@ -33,7 +33,7 @@ public class Game {
          "🏰 Victory! You've reached the Castle! You are now the ruler! 👑"}
     };
 
-    //-- Start at level 0, center position--
+    //-- start at level 0, center position--
     public Game() {
         this.player = new Player(1, 0);
         this.scanner = new Scanner(System.in);
@@ -46,10 +46,10 @@ public class Game {
         System.out.println();
 
         while (running) {
-            // --Show current map with player position--
+            // --show current map with player position--
             Maps.gameMap(player.getY(), player.getX());
 
-            // Show current location and description
+            // show current location and description
             String currentArea = areaNames[player.getY()][player.getX()];
             String description = areaDescriptions[player.getY()][player.getX()];
 
@@ -57,14 +57,14 @@ public class Game {
             System.out.println("ℹ️  " + description);
             System.out.println();
 
-            // Check for victory
+            // check for victory
             if (player.getY() == 3) {
                 System.out.println("🏆 CONGRATULATIONS! You reached the Castle and WON the game! 🏆");
                 System.out.println("👑 You are now the ruler of this realm! 👑");
                 break;
             }
 
-            //- Get user input --
+            //- get user input --
             System.out.print("What to do~~: ");
             String command = scanner.nextLine().toLowerCase().trim();
 
@@ -79,9 +79,9 @@ public class Game {
             case "up":
             case "climb":
                 if (isValidVerticalMove(player.getY() + 1)) {
-                    player.moveDown(); // moveDown increases Y coordinate
+                    player.moveDown(); // movedown increases y coordinate
                     String newArea = areaNames[player.getY()][player.getX()];
-                    System.out.println("✅ Climbed up to " + newArea + "!");
+                    System.out.println("Climbed up to " + newArea + "!");
                 } else {
                     System.out.println("Cant climb higher! You reached the top!");
                 }
@@ -90,7 +90,7 @@ public class Game {
             case "down":
             case "descend":
                 if (isValidVerticalMove(player.getY() - 1)) {
-                    player.moveUp(); // moveUp decreases Y coordinate
+                    player.moveUp(); // moveup decreases y coordinate
                     String newArea = areaNames[player.getY()][player.getX()];
                     System.out.println("Descended to " + newArea + "!");
                 } else {
@@ -110,7 +110,7 @@ public class Game {
                 if (isValidHorizontalMove(player.getX() + 1)) {
                     player.moveRight();
                     String newArea = areaNames[player.getY()][player.getX()];
-                    System.out.println("✅ Moved right to " + newArea + "!");
+                    System.out.println("Moved right to " + newArea + "!");
                 } else {
                     System.out.println("Cant go further right!");
                 }

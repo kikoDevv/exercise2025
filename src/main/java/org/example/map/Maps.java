@@ -14,9 +14,10 @@ public class Maps {
         Funcs.print("                    ┌─────────┐  ");
         if (playerLevel == 3) {
             Funcs.print("                    │ CASTLE  │");
-            Funcs.print("                    │   😎👋   │  ← 🎯GOAL: You WIN!");
-            Funcs.print("                    │ (HERE!) │");
-            Funcs.print("                    │   🛡️     │");
+            Funcs.print("                    │   👑    │");
+            Funcs.print("                    │   🤴    │  ← 🎯GOAL: You WIN!");
+            Funcs.print("                    │  <) )✌️  │");
+            Funcs.print("                    │   /\\    │");
         } else {
             Funcs.print("                    │ CASTLE  │");
             Funcs.print("                    │   🏰    │  ← 🎯GOAL: Reach here to WIN!");
@@ -31,23 +32,30 @@ public class Maps {
         //-- LEVEL 3 - BRIDGE CHALLENGE Level 2 in array--
         Funcs.print("     ┌─────────┐    ┌────┴────┐    ┌─────────┐");
         if (playerLevel == 2) {
-            String leftArea = (playerPosition == 0) ? "   😎👋   " : " MOUNTAIN";
-            String centerArea = (playerPosition == 1) ? "   😎👋   " : " BRIDGE  ";
-            String rightArea = (playerPosition == 2) ? "   😎👋   " : " FOREST  ";
+            Funcs.print("     │ MOUNTAIN│    │ BRIDGE  │    │ FOREST  │");
 
-            Funcs.print("     │" + leftArea + "│    │" + centerArea + "│    │" + rightArea + "│");
-
-            String leftIcon = (playerPosition == 0) ? " (HERE!) " : "  ⛰️🏔️⛰️    ";
-            String centerIcon = (playerPosition == 1) ? " (HERE!) " : " 🌉🚪🌉  ";
-            String rightIcon = (playerPosition == 2) ? " (HERE!) " : "  🌲🌲🌲 ";
+            String leftIcon = (playerPosition == 0) ? "   😎    " : "  ⛰️🏔️⛰️    ";
+            String centerIcon = (playerPosition == 1) ? "   😎    " : " 🌉🚪🌉  ";
+            String rightIcon = (playerPosition == 2) ? "   😎    " : "  🌲🌲🌲 ";
 
             Funcs.print("     │" + leftIcon + "├────┤" + centerIcon + "├────│" + rightIcon + "│");
-            Funcs.print("     │  🏔️💎🏔️   │    │ 🌉🚪🌉  │    │    ⛺️  │");
+
+            String leftFeet = (playerPosition == 0) ? "  <) )   " : "  🏔️💎🏔️   ";
+            String centerFeet = (playerPosition == 1) ? "  <) )   " : " 🚪🔒🚪  ";
+            String rightFeet = (playerPosition == 2) ? "  <) )   " : "    ⛺️  ";
+
+            Funcs.print("     │" + leftFeet + "│    │" + centerFeet + "│    │" + rightFeet + "│");
+
+            String leftEnv = (playerPosition == 0) ? "   /\\    " : "  ⛰️💎⛰️   ";
+            String centerEnv = (playerPosition == 1) ? "   /\\    " : " 🌉🚪🌉  ";
+            String rightEnv = (playerPosition == 2) ? "   /\\    " : "  🌲🌲🌲 ";
+
+            Funcs.print("     │" + leftEnv + "│    │" + centerEnv + "│    │" + rightEnv + "│");
         } else {
             Funcs.print("     │ MOUNTAIN│    │ BRIDGE  │    │ FOREST  │");
             Funcs.print("     │  ⛰️🏔️⛰️    │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
-            Funcs.print("     │  🏔️💎🏔️   ├────┤ 🚪🔒🚪  ├────│    ⛺️  │");
-            Funcs.print("     │  ⛰️💎⛰️    │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
+            Funcs.print("     │  🏔️💎🏔️   ├────┤ 🚪🔒🚪  ├────│    ⛺️    │");
+            Funcs.print("     │  ⛰️💎⛰️   │    │ 🌉🚪🌉  │    │  🌲🌲🌲 │");
         }
         Funcs.print("     └─────────┘    └────┬────┘    └─────────┘");
         Funcs.print("                         ↑ LOCKED BRIDGE");
@@ -57,18 +65,25 @@ public class Maps {
         //-- LEVEL 2 - VILLAGE & EXPLORATION Level 1 in array--
         Funcs.print("     ┌─────────┐    ┌────┴────┐    ┌─────────┐");
         if (playerLevel == 1) {
-            String leftArea = (playerPosition == 0) ? "   😎👋   " : " DUNGEON ";
-            String centerArea = (playerPosition == 1) ? "   😎👋   " : " VILLAGE ";
-            String rightArea = (playerPosition == 2) ? "   😎👋   " : "LAKE+HEAL";
+            Funcs.print("     │ DUNGEON │    │ VILLAGE │    │LAKE+HEAL│");
 
-            Funcs.print("     │" + leftArea + "│    │" + centerArea + "│    │" + rightArea + "│");
-
-            String leftIcon = (playerPosition == 0) ? " (HERE!) " : "  ⚔️💀⚔️   ";
-            String centerIcon = (playerPosition == 1) ? " (HERE!) " : "  🏘️🏘️🏘️    ";
-            String rightIcon = (playerPosition == 2) ? " (HERE!) " : " ⛰️ 🏔️ ⛰️   ";
+            String leftIcon = (playerPosition == 0) ? "   😎    " : "  ⚔️💀⚔️   ";
+            String centerIcon = (playerPosition == 1) ? "   😎    " : "  🏘️🏘️🏘️    ";
+            String rightIcon = (playerPosition == 2) ? "   😎    " : " ⛰️ 🏔️ ⛰️   ";
 
             Funcs.print("     │" + leftIcon + "├────┤" + centerIcon + "├────│" + rightIcon + "│");
-            Funcs.print("     │💀 🔑 💀 │    │🏘️ 🗡️🗡️  🏘️  │    │ ⛰️ 🩸⛰️   │");
+
+            String leftFeet = (playerPosition == 0) ? "  <) )   " : "💀 🔑 💀 ";
+            String centerFeet = (playerPosition == 1) ? "  <) )   " : "🏘️ 🗡️🗡️  🏘️  ";
+            String rightFeet = (playerPosition == 2) ? "  <) )   " : " ⛰️ 🩸⛰️   ";
+
+            Funcs.print("     │" + leftFeet + "│    │" + centerFeet + "│    │" + rightFeet + "│");
+
+            String leftEnvVillage = (playerPosition == 0) ? "   /\\    " : "  ⚔️💀⚔️   ";
+            String centerEnvVillage = (playerPosition == 1) ? "   /\\    " : "  🏘️🏘️🏘️    ";
+            String rightEnvVillage = (playerPosition == 2) ? "   /\\    " : " ⛰️ 🏔️ ⛰️   ";
+
+            Funcs.print("     │" + leftEnvVillage + "│    │" + centerEnvVillage + "│    │" + rightEnvVillage + "│");
         } else {
             Funcs.print("     │ DUNGEON │    │ VILLAGE │    │LAKE+HEAL│");
             Funcs.print("     │  ⚔️💀⚔️   │    │  🏘️🏘️🏘️    │    │ ⛰️ 🏔️ ⛰️   │");
@@ -90,17 +105,17 @@ public class Maps {
         if (playerLevel == 0) {
             Funcs.print("                    ┌─────────┐");
             Funcs.print("                    │  HOME   │    ");
-            Funcs.print("                    │   😎👋   │    ");
-            Funcs.print("                    │ (HERE!) │    ");
+            Funcs.print("                    │   😎👋  │    ");
+            Funcs.print("                    │  <) )   │    ");
             Funcs.print("                 ───┤   /\\    ├─── ");
             Funcs.print("                    │ 🏕️ 🔥🏕️   │     ");
             Funcs.print("                    └─────────┘    ");
         } else {
             Funcs.print("                    ┌─────────┐");
             Funcs.print("                    │  HOME   │    ");
-            Funcs.print("                    │   😎    │    ");
-            Funcs.print("                    │  <) )   │    ");
-            Funcs.print("                 ───┤   /\\    ├─── ");
+            Funcs.print("                    │         │    ");
+            Funcs.print("                    │         │    ");
+            Funcs.print("                 ───┤         ├─── ");
             Funcs.print("                    │ 🏕️ 🔥🏕️   │     ");
             Funcs.print("                    └─────────┘    ");
         }
