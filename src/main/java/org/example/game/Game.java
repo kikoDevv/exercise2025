@@ -62,8 +62,7 @@ public class Game {
         areaItems.put("1,1", new Item("🗡️ Iron Sword", "weapon", 15, "Sharp sword from village blacksmith"));
         // Add diamond to mountain (locked until key is obtained)
         areaItems.put("2,0", new Item("💎 Precious Diamond", "treasure", 1, "Valuable diamond that guards love"));
-        // Add health potion to lake
-        areaItems.put("1,2", new Item("🩸 Health Potion", "potion", 30, "Restores 30 health points"));
+        // lake with healing ability
     }
 
     public void start() {
@@ -367,6 +366,20 @@ public class Game {
 
     private void collectItem() {
         String areaKey = player.getY() + "," + player.getX();
+
+        // ---healing-----
+        if (areaKey.equals("1,2")) {
+            if (player.getHealth() < 100) {
+                int healAmount = 30;
+                int oldHealth = player.getHealth();
+                player.heal(healAmount);
+                int actualHealed = player.getHealth() - oldHealth;
+                lastActionMessage = "💧 You drink from the magical lake and restore " + actualHealed + " health! ✨";
+            } else {
+                lastActionMessage = "💧 The magical lake waters shimmer, but you're already at full health!";
+            }
+            return;
+        }
 
         // -- Mountain diamond requires key to be unlocked first--
         if (areaKey.equals("2,0") && !mountainUnlocked) {
