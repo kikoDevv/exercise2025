@@ -38,7 +38,7 @@ public class Maps {
         Funcs.print("                    🏰 CLIMB TO VICTORY QUEST 🏰                       ");
         Funcs.print("🎮 OBJECTIVE: Climb from SAFE HOUSE (🏕️ 🔥) to CASTLE (🏰) to WIN! 🏆");
         Funcs.print("⚔️  BEWARE: Guards, monsters and locked doors block your path to victory!");
-        Funcs.print("🗝️  COLLECT: Keys and treasures to help your journey upward!");
+        Funcs.print("🗝️  COLLECT: Keys🔑, treasures💎 and healing lake🩸 to help your journey!");
         Funcs.print("🎮 COMMANDS: up (climb), down (descend), left, right, quit");
         Funcs.print("═══════════════════════════════════════════════════════════════════════");
 
@@ -66,7 +66,7 @@ public class Maps {
         if (playerLevel == 2) {
             Funcs.print("     │ MOUNTAIN│    │ BRIDGE  │    │ FOREST  │");
 
-            String leftIcon = (playerPosition == 0) ? "   😎    " : "  ⛰️🏔️⛰️    ";
+            String leftIcon = (playerPosition == 0) ? "   😍    " : "  ⛰️🏔️⛰️    ";
             String centerIcon = (playerPosition == 1) ? "   😎    " : " 🌉🚪🌉  ";
             String rightIcon = (playerPosition == 2) ? "   😎    " : "  🌲🌲🌲 ";
 
@@ -99,9 +99,9 @@ public class Maps {
         if (playerLevel == 1) {
             Funcs.print("     │ DUNGEON │    │ VILLAGE │    │LAKE+HEAL│");
 
-            String leftIcon = (playerPosition == 0) ? "   😎    " : "  ⚔️💀⚔️   ";
+            String leftIcon = (playerPosition == 0) ? "   😨    " : "  ⚔️💀⚔️   ";
             String centerIcon = (playerPosition == 1) ? "   😎    " : "  🏘️🏘️🏘️    ";
-            String rightIcon = (playerPosition == 2) ? "   😎    " : " 🌊 🌊 🌊";
+            String rightIcon = (playerPosition == 2) ? "   🤕    " : " 🌊 🌊 🌊";
 
             Funcs.print("     │" + leftIcon + "├────┤" + centerIcon + "├────│" + rightIcon + "│");
 

@@ -22,6 +22,10 @@ public class Game {
     private boolean mountainUnlocked = false;
     private boolean guardPaid = false;
 
+
+    private static final String HOME_DESC = "🏕️  You are at your safe Home base. Rest and prepare for the journey ahead!";
+    private static final String CASTLE_DESC = "🏰 Castle entrance guarded by a diamond-loving guard! 💂";
+
     // -- area names for each level and position --
     private String[][] areaNames = {
             { "Home", "Home", "Home" },
@@ -32,18 +36,14 @@ public class Game {
 
     // -- area descriptions and actions --
     private String[][] areaDescriptions = {
-            { "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
-                    "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
-                    "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!" },
+            { HOME_DESC, HOME_DESC, HOME_DESC },
             { " Dark Dungeon with dangerous skeleton! Defeat it to get the golden key! 🔑",
-                    "🏘️ Peaceful Village with friendly blacksmith!",
-                    "💧 Healing Lake with magical waters. Restore your health here! 🩸" },
-            { "⛰️ Treacherous Mountain peaks! Find precious diamond for the castle guard! 💎",
-                    "🌉 Mysterious Bridge connecting the areas.",
-                    "🌲 Enchanted Forest with hidden treasures. (Requires golden key to enter) ⛺" },
-            { "🏰 Castle entrance guarded by a diamond-loving guard! �",
-                    "🏰 Castle entrance guarded by a diamond-loving guard! �",
-                    "🏰 Castle entrance guarded by a diamond-loving guard! �" }
+                    "🏘️  Peaceful Village with friendly blacksmith!",
+                    "💧  Healing Lake with magical waters. Restore your health here! 🩸" },
+            { "⛰️  Treacherous Mountain peaks! Find precious diamond for the castle guard! 💎",
+                    "🌉  Mysterious Bridge connecting the areas.",
+                    "🌲  Enchanted Forest with hidden treasures. (Requires golden key to enter) ⛺" },
+            { CASTLE_DESC, CASTLE_DESC, CASTLE_DESC }
     };
 
     // -- start at level 0, center position--
@@ -67,7 +67,7 @@ public class Game {
 
     public void start() {
         System.out.println("🎮 Welcome to Climb to Victory Quest!");
-        System.out.println("Commands: up, down, left, right, attack, inventory, use, collect, look, give, quit");
+        System.out.println("Commands: up, down, left, right, attack, inventory, collect, look, give, quit");
         System.out.println();
 
         while (running) {
@@ -91,14 +91,8 @@ public class Game {
 
             // Check if player is in dungeon with enemy
             if (player.getY() == 1 && player.getX() == 0 && dungeonEnemy.isAlive()) {
-                System.out.print("| ⚔️ " + dungeonEnemy.getName() + "guards the Key🔑! \n| 💀 HP: ");
-                for (int i = 0; i < dungeonEnemy.getHealth() / 20; i++) {
-                    System.out.print("🟥");
-                }
-                for (int i = 0; i < 5 - player.getHealth() / 20; i++) {
-                    System.out.print("--");
-                }
-
+                System.out.println("| " + dungeonEnemy.getName() + " guards the Key🔑!");
+                System.out.println("| 💀 Enemy HP: " + dungeonEnemy.getHealth() + "|" + renderHealthBar(dungeonEnemy.getHealth()) + "|");
             }
 
             // Check for items in current area
@@ -128,15 +122,8 @@ public class Game {
                 }
             }
 
-            // -- show HP and inventory --
-            System.out.print("| 😎 HP:" + player.getHealth() + "|");
-            for (int i = 0; i < player.getHealth() / 20; i++) {
-                System.out.print("🟥");
-            }
-            for (int i = 0; i < 5 - player.getHealth() / 20; i++) {
-                System.out.print("--");
-            }
-            System.out.println("| " + player.getInventoryDisplay());
+            // -- show Player HP and inventory --
+            System.out.println("| 😎 Player HP:" + player.getHealth() + "|" + renderHealthBar(player.getHealth()) + "| " + player.getInventoryDisplay());
 
             // check for victory
             if (player.getY() == 3 && guardPaid) {
@@ -148,7 +135,7 @@ public class Game {
             }
 
             // - get user input --
-            Funcs.print("| 🎮COMMANDS: up, down, left, right, attack, inventory, use, collect, look, give, quit |");
+            Funcs.print("| 🎮 COMMANDS: up, down, left, right, attack, inventory, collect, look, give, quit   |");
             Funcs.print("|----------------------------------------INFO----------------------------------------|");
             System.out.print("|~~>: ");
 
@@ -168,13 +155,7 @@ public class Game {
 
                     if (player.getY() == 2 && (player.getY() + 1) == 3) {
                         if (!guardPaid) {
-                            Item diamond = null;
-                            for (Item item : player.getInventory()) {
-                                if (item.getName().contains("Diamond")) {
-                                    diamond = item;
-                                    break;
-                                }
-                            }
+                            Item diamond = findDiamond();
 
                             if (diamond == null) {
                                 lastActionMessage = "💂 Castle Guard: 'Halt! I need a precious diamond to let you pass!'";
@@ -288,10 +269,6 @@ public class Game {
                 collectItem();
                 break;
 
-            case "use":
-                useItem();
-                break;
-
             case "give":
             case "pay":
                 giveDiamondToGuard();
@@ -302,7 +279,7 @@ public class Game {
                 break;
 
             default:
-                lastActionMessage = "❓ Unknown command. Use: up, down, left, right, attack, inventory, use, collect, look, give, quit";
+                lastActionMessage = "❓ Unknown command. Use: up, down, left, right, attack, inventory, collect, look, give, quit";
                 break;
         }
     }
@@ -355,7 +332,7 @@ public class Game {
         if (player.getInventorySize() == 0) {
             lastActionMessage = "� Your inventory is empty!";
         } else {
-            StringBuilder sb = new StringBuilder("🎒 Inventory:\n");
+            StringBuilder sb = new StringBuilder("🎒Inventory:\n");
             for (Item item : player.getInventory()) {
                 sb.append("   - ").append(item.toString());
                 sb.append("\n");
@@ -400,13 +377,7 @@ public class Game {
     private void giveDiamondToGuard() {
         // -- Check if player is at castle entrance
         if (player.getY() == 3) {
-            Item diamond = null;
-            for (Item item : player.getInventory()) {
-                if (item.getName().contains("Diamond")) {
-                    diamond = item;
-                    break;
-                }
-            }
+            Item diamond = findDiamond();
 
             if (diamond != null) {
                 player.removeItem(diamond);
@@ -420,14 +391,26 @@ public class Game {
         }
     }
 
-    private void useItem() {
-        if (player.hasPotion() && player.getHealth() < 100) {
-            lastActionMessage = CombatService.usePotion(player);
-        } else if (player.hasPotion()) {
-            lastActionMessage = "❌ You're already at full health!";
-        } else {
-            lastActionMessage = "❌ You don't have any items to use!";
+    // Helper method to find diamond in inventory
+    private Item findDiamond() {
+        for (Item item : player.getInventory()) {
+            if (item.getName().contains("Diamond")) {
+                return item;
+            }
         }
+        return null;
+    }
+
+    // Helper method to render health bar
+    private String renderHealthBar(int health) {
+        StringBuilder bar = new StringBuilder();
+        for (int i = 0; i < health / 20; i++) {
+            bar.append("🟥");
+        }
+        for (int i = 0; i < 5 - health / 20; i++) {
+            bar.append("--");
+        }
+        return bar.toString();
     }
 
     private void lookAround() {

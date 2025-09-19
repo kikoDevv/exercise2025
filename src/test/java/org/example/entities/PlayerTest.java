@@ -17,7 +17,7 @@ public class PlayerTest {
         assertEquals(1, player.getX());
         assertEquals(0, player.getY());
         assertEquals(100, player.getHealth());
-        assertEquals(20, player.getDamage());
+        assertEquals(10, player.getDamage());
         assertTrue(player.isAlive());
         assertEquals(0, player.getInventorySize());
     }

@@ -143,10 +143,10 @@ public class Player {
 
     public String getInventoryDisplay() {
         if (inventory.isEmpty()) {
-            return "🎒 Inventory: Empty";
+            return "🎒Inventory: Empty";
         }
 
-        StringBuilder sb = new StringBuilder("🎒 Inventory: ");
+        StringBuilder sb = new StringBuilder("🎒Inventory: ");
         for (int i = 0; i < inventory.size(); i++) {
             Item item = inventory.get(i);
             sb.append(item.getName());
