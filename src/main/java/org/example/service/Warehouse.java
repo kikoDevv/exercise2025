@@ -5,21 +5,28 @@ import org.example.entities.Product;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Warehouse {
     private final Map<String, Product> products;
 
     public Warehouse() {
-        this.products = new HashMap<>();
+        this.products = new ConcurrentHashMap<>();
     }
 
     public void addProduct(Product product) {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
+        if (product.id() == null || product.id().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product ID cannot be empty");
+        }
         if (product.name() == null || product.name().trim().isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
+        }
+        if (products.containsKey(product.id())) {
+            throw new IllegalArgumentException("Product with ID " + product.id() + " already exists");
         }
         products.put(product.id(), product);
     }

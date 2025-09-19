@@ -25,8 +25,25 @@ public record Product(
       throw new IllegalArgumentException("Rating must be between 0 and 10");
     }
   }
-  //---- helper method to create a new product-----
+
+  //--Helper method to create a new product with updated fields--
   public Product withUpdatedFields(String newName, Category newCategory, int newRating) {
-    return new Product (id, newName, newCategory, newRating, createdDate, LocalDate.now());
+    return withUpdatedFields(newName, newCategory, newRating, LocalDate.now());
+  }
+
+  //--Helper method with explicit modified date for better testability--
+  public Product withUpdatedFields(String newName, Category newCategory, int newRating, LocalDate modifiedDate) {
+    Objects.requireNonNull(newName, "Name cannot be null");
+    Objects.requireNonNull(newCategory, "Category cannot be null");
+    Objects.requireNonNull(modifiedDate, "Modified date cannot be null");
+
+    if (newName.trim().isEmpty()) {
+      throw new IllegalArgumentException("Name cannot be empty");
+    }
+    if (newRating < 0 || newRating > 10) {
+      throw new IllegalArgumentException("Rating must be between 0 and 10");
+    }
+
+    return new Product(id, newName.trim(), newCategory, newRating, createdDate, modifiedDate);
   }
 }

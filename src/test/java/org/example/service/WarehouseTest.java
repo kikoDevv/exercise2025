@@ -9,6 +9,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,6 +51,59 @@ public class WarehouseTest {
         assertThrows(IllegalArgumentException.class, () -> {
             warehouse.addProduct(null);
         });
+    }
+
+    @Test
+    void addProduct_EmptyProductId_ThrowsException() {
+        // Given
+        Product productWithEmptyId = new Product(
+            "   ", // Whitespace-only ID
+            "iPhone 15",
+            Category.ELECTRONICS,
+            9,
+            LocalDate.now(),
+            LocalDate.now()
+        );
+
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            warehouse.addProduct(productWithEmptyId);
+        });
+        assertTrue(exception.getMessage().contains("Product ID cannot be empty"));
+    }    @Test
+    void addProduct_NullProductId_ThrowsException() {
+        // When & Then - Product record validation catches null ID
+        assertThrows(NullPointerException.class, () -> {
+            new Product(
+                null,
+                "iPhone 15",
+                Category.ELECTRONICS,
+                9,
+                LocalDate.now(),
+                LocalDate.now()
+            );
+        });
+    }    @Test
+    void addProduct_DuplicateId_ThrowsException() {
+        // Given
+        warehouse.addProduct(testProduct);
+        Product duplicateProduct = new Product(
+            "1", // Same ID as testProduct
+            "iPad Pro",
+            Category.ELECTRONICS,
+            8,
+            LocalDate.now(),
+            LocalDate.now()
+        );
+
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            warehouse.addProduct(duplicateProduct);
+        });
+        assertTrue(exception.getMessage().contains("already exists"));
+
+        // Verify original product is unchanged
+        assertEquals("iPhone 15", warehouse.getProductById("1").get().name());
     }
 
     @Test
@@ -193,7 +250,7 @@ public class WarehouseTest {
 
         // Then
         assertEquals(2, topRated.size());
-        assertEquals("iPhone", topRated.get(0).name());  
+        assertEquals("iPhone", topRated.get(0).name());
         assertEquals("iPad", topRated.get(1).name());
         assertTrue(topRated.stream().allMatch(p -> p.rating() == 10));
     }
@@ -209,5 +266,40 @@ public class WarehouseTest {
 
         // Then
         assertTrue(topRated.isEmpty());
+    }
+
+    @Test
+    void testConcurrentAccess() throws InterruptedException {
+        // --Given
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+        CountDownLatch latch = new CountDownLatch(100);
+
+        // When 100 threads adding products concurrently
+        for (int i = 0; i < 100; i++) {
+            final int productId = i;
+            executor.submit(() -> {
+                try {
+                    Product product = new Product(
+                        String.valueOf(productId),
+                        "Product " + productId,
+                        Category.ELECTRONICS,
+                        5,
+                        LocalDate.now(),
+                        LocalDate.now()
+                    );
+                    warehouse.addProduct(product);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        // Wait for all threads to complete
+        latch.await(5, TimeUnit.SECONDS);
+        executor.shutdown();
+
+        // Then - All products should be added successfully
+        assertEquals(100, warehouse.getAllProducts().size());
+        assertEquals(100, warehouse.countProductsInCategory(Category.ELECTRONICS));
     }
 }
