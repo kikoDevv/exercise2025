@@ -5,7 +5,7 @@ import org.example.entities.Tile;
 
 public class Maps {
     // Simple 3x3 grid for dungeon exploration
-    private static Tile[][] dungeonGrid = {
+    private static final Tile[][] dungeonGrid = {
         {Tile.createWall(), Tile.createWall(), Tile.createWall()},
         {Tile.createFloor(), Tile.createFloor(), Tile.createFloor()},
         {Tile.createWall(), Tile.createWall(), Tile.createWall()}

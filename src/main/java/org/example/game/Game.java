@@ -394,7 +394,7 @@ public class Game {
     // Helper method to find diamond in inventory
     private Item findDiamond() {
         for (Item item : player.getInventory()) {
-            if (item.getName().contains("Diamond")) {
+            if ("💎 Precious Diamond".equals(item.getName())) {
                 return item;
             }
         }
