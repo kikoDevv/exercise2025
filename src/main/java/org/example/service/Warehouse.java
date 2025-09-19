@@ -78,4 +78,61 @@ public class Warehouse {
                 .filter(product -> !product.createdDate().equals(product.modifiedDate()))
                 .collect(Collectors.toList());
     }
+
+    //------------- VG Distinction Methods --------------
+     // Return all categories that have at least one product
+    public List<Category> getCategoriesWithProducts() {
+        return products.values().stream()
+                .map(Product::category)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+
+    // Return the number of products in a specific category
+    public long countProductsInCategory(Category category) {
+        if (category == null) {
+            return 0;
+        }
+        return products.values().stream()
+                .filter(product -> product.category() == category)
+                .count();
+    }
+
+
+     // Return a map of first letters in product names and their counts
+    public Map<Character, Integer> getProductInitialsMap() {
+        return products.values().stream()
+                .filter(product -> !product.name().isEmpty())
+                .collect(Collectors.groupingBy(
+                    product -> Character.toUpperCase(product.name().charAt(0)),
+                    Collectors.collectingAndThen(Collectors.counting(), Math::toIntExact)
+                ));
+    }
+
+
+     // Return products with max rating, created this month, sorted by newest first
+    public List<Product> getTopRatedProductsThisMonth() {
+        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+        LocalDate endOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+
+        // Find the maximum rating among products created this month
+        OptionalInt maxRating = products.values().stream()
+                .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
+                                 !product.createdDate().isAfter(endOfMonth))
+                .mapToInt(Product::rating)
+                .max();
+
+        if (maxRating.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return products.values().stream()
+                .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
+                                 !product.createdDate().isAfter(endOfMonth))
+                .filter(product -> product.rating() == maxRating.getAsInt())
+                .sorted(Comparator.comparing(Product::createdDate).reversed())
+                .collect(Collectors.toList());
+    }
 }
