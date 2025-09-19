@@ -51,7 +51,7 @@ public class Game {
         this.player = new Player(1, 0);
         this.scanner = new Scanner(System.in);
         this.running = true;
-        this.dungeonEnemy = new Enemy("💀 Skeleton Guardian", 50, 15);
+        this.dungeonEnemy = new Enemy("💀 Skeleton Guardian", 100, 20);
         this.lastActionMessage = "";
         this.areaItems = new HashMap<>();
         initializeAreaItems();
@@ -119,7 +119,13 @@ public class Game {
             }
 
             // -- show HP and inventory --
-            System.out.println("| ❤️ Health: " + player.getHealth() + "/100");
+            System.out.print("| ❤️  Health: " + player.getHealth() + "|");
+            for (int i = 0; i < player.getHealth() / 20; i ++ ) {
+                System.out.print("🟥");
+            }
+            for (int i = 0; i < 5 - player.getHealth() / 20; i ++ ) {
+                System.out.print("--");
+            }
             System.out.println("| " + player.getInventoryDisplay());
 
             // check for victory
@@ -326,6 +332,8 @@ public class Game {
             lastActionMessage = combatResult;
 
             if (!player.isAlive()) {
+                System.out.println("💀 GAME OVER! 💀");
+                System.out.println("☠️ You have been defeated by the " + dungeonEnemy.getName() + "!");
                 running = false;
             }
         } else {

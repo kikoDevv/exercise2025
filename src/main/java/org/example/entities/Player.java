@@ -16,7 +16,7 @@ public class Player {
         this.x = startX;
         this.y = startY;
         this.health = 100;
-        this.damage = 20;
+        this.damage = 10;
         this.isAlive = true;
         this.inventory = new ArrayList<>();
         this.equippedWeapon = null;

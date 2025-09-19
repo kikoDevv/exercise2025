@@ -16,7 +16,7 @@ public class CombatService {
             baseDamage += weapon.getEffectValue();
         }
 
-        // Add some randomness (80-120% of base damage)
+        // Add randomness damage
         double multiplier = 0.8 + (Math.random() * 0.4);
         return (int) (baseDamage * multiplier);
     }
@@ -24,10 +24,7 @@ public class CombatService {
     // Calculate enemy damage
     public static int calculateEnemyDamage(Enemy enemy) {
         int baseDamage = enemy.getDamage();
-
-        // Add some randomness (70-100% of base damage)
-        double multiplier = 0.7 + (Math.random() * 0.3);
-        return (int) (baseDamage * multiplier);
+        return baseDamage;
     }
 
     // Execute a combat round
