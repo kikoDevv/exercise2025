@@ -22,31 +22,31 @@ public class Game {
     private boolean mountainUnlocked = false;
     private boolean guardPaid = false;
 
-    //-- area names for each level and position --
+    // -- area names for each level and position --
     private String[][] areaNames = {
-        {"Home", "Home", "Home"},
-        {"Dungeon", "Village", "Lake"},
-        {"Mountain", "Bridge", "Forest"},
-        {"Castle", "Castle", "Castle"}
+            { "Home", "Home", "Home" },
+            { "Dungeon", "Village", "Lake" },
+            { "Mountain", "Bridge", "Forest" },
+            { "Castle", "Castle", "Castle" }
     };
 
-    //-- area descriptions and actions --
+    // -- area descriptions and actions --
     private String[][] areaDescriptions = {
-        {"🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
-         "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
-         "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!"},
-        {"⚔️ Dark Dungeon with dangerous skeleton! Defeat it to get the golden key! 🔑",
-         "🏘️ Peaceful Village with friendly blacksmith. Get your sword here! 🗡️",
-         "💧 Healing Lake with magical waters. Restore your health here! 🩸"},
-        {"⛰️ Treacherous Mountain peaks! Find precious diamond for the castle guard! 💎",
-         "🌉 Mysterious Bridge connecting the areas.",
-         "🌲 Enchanted Forest with hidden treasures. (Requires golden key to enter) ⛺"},
-        {"🏰 Castle entrance guarded by a diamond-loving guard! �",
-         "🏰 Castle entrance guarded by a diamond-loving guard! �",
-         "🏰 Castle entrance guarded by a diamond-loving guard! �"}
+            { "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
+                    "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!",
+                    "🏕️ You are at your safe Home base. Rest and prepare for the journey ahead!" },
+            { " Dark Dungeon with dangerous skeleton! Defeat it to get the golden key! 🔑",
+                    "🏘️ Peaceful Village with friendly blacksmith!",
+                    "💧 Healing Lake with magical waters. Restore your health here! 🩸" },
+            { "⛰️ Treacherous Mountain peaks! Find precious diamond for the castle guard! 💎",
+                    "🌉 Mysterious Bridge connecting the areas.",
+                    "🌲 Enchanted Forest with hidden treasures. (Requires golden key to enter) ⛺" },
+            { "🏰 Castle entrance guarded by a diamond-loving guard! �",
+                    "🏰 Castle entrance guarded by a diamond-loving guard! �",
+                    "🏰 Castle entrance guarded by a diamond-loving guard! �" }
     };
 
-    //-- start at level 0, center position--
+    // -- start at level 0, center position--
     public Game() {
         this.player = new Player(1, 0);
         this.scanner = new Scanner(System.in);
@@ -80,16 +80,26 @@ public class Game {
             String description = areaDescriptions[player.getY()][player.getX()];
 
             Funcs.print("|----------------------------------------INFO----------------------------------------|");
-            //--- Show last action ---------
+            // --- Show last action ---------
             if (!lastActionMessage.isEmpty()) {
                 System.out.println("| " + lastActionMessage);
-                lastActionMessage = ""; // Clear message after showing
+                lastActionMessage = "";
             }
-            System.out.println("| " + description);
+
+            if (!(player.getY() == 1 && player.getX() == 0)) {
+                System.out.println("| " + description);
+            }
 
             // Check if player is in dungeon with enemy
             if (player.getY() == 1 && player.getX() == 0 && dungeonEnemy.isAlive()) {
-                System.out.println("| ⚔️ " + dungeonEnemy.getName() + " blocks your path! (HP: " + dungeonEnemy.getHealth() + ")");
+                System.out.print("| ⚔️ " + dungeonEnemy.getName() + "guards the Key🔑! \n| 💀 HP: ");
+                for (int i = 0; i < dungeonEnemy.getHealth() / 20; i++) {
+                    System.out.print("🟥");
+                }
+                for (int i = 0; i < 5 - player.getHealth() / 20; i++) {
+                    System.out.print("--");
+                }
+
             }
 
             // Check for items in current area
@@ -99,7 +109,8 @@ public class Game {
                 if (areaKey.equals("2,0") && !mountainUnlocked) {
                     System.out.println("| 🔒 You see something valuable, but the area is locked!");
                 } else {
-                    System.out.println("| ✨ You see an item here: " + areaItems.get(areaKey).getName() + " - use 'collect' to pick it up!");
+                    System.out.println("| ✨ You see an item here: " + areaItems.get(areaKey).getName()
+                            + " - use 'collect' to pick it up!");
                 }
             }
 
@@ -119,23 +130,25 @@ public class Game {
             }
 
             // -- show HP and inventory --
-            System.out.print("| ❤️  Health: " + player.getHealth() + "|");
-            for (int i = 0; i < player.getHealth() / 20; i ++ ) {
+            System.out.print("| 😎 HP:" + player.getHealth() + "|");
+            for (int i = 0; i < player.getHealth() / 20; i++) {
                 System.out.print("🟥");
             }
-            for (int i = 0; i < 5 - player.getHealth() / 20; i ++ ) {
+            for (int i = 0; i < 5 - player.getHealth() / 20; i++) {
                 System.out.print("--");
             }
             System.out.println("| " + player.getInventoryDisplay());
 
             // check for victory
             if (player.getY() == 3 && guardPaid) {
-                System.out.println("🏆 CONGRATULATIONS! You gave the diamond to the guard and entered the Castle!");
-                System.out.println("👑 You are now the ruler of this realm! YOU WON! 👑");
+                System.out.println("| 🏆 CONGRATULATIONS! You gave the diamond to the guard and entered the Castle!");
+                System.out.println("| 👑 You are now the ruler of this realm! YOU WON! 👑");
+                Funcs.print("|----------------------------------------INFO----------------------------------------|");
+                Funcs.spacer(7);
                 break;
             }
 
-            //- get user input --
+            // - get user input --
             Funcs.print("| 🎮COMMANDS: up, down, left, right, attack, inventory, use, collect, look, give, quit |");
             Funcs.print("|----------------------------------------INFO----------------------------------------|");
             System.out.print("|~~>: ");
@@ -301,8 +314,6 @@ public class Game {
             return false;
         }
 
-
-
         return player.getX() == 1;
     }
 
@@ -325,7 +336,7 @@ public class Game {
                 // Drop golden key when defeated
                 Item goldenKey = new Item("🔑 Golden Key", "key", 1, "Opens the bridge gate");
                 player.addItem(goldenKey);
-                lastActionMessage = combatResult + " 🔑 You found a golden key!";
+                lastActionMessage = combatResult + "!";
                 return;
             }
 
@@ -348,9 +359,6 @@ public class Game {
             StringBuilder sb = new StringBuilder("🎒 Inventory:\n");
             for (Item item : player.getInventory()) {
                 sb.append("   - ").append(item.toString());
-                if (item.equals(player.getEquippedWeapon())) {
-                    sb.append(" (equipped)");
-                }
                 sb.append("\n");
             }
             lastActionMessage = sb.toString();
@@ -377,7 +385,7 @@ public class Game {
     }
 
     private void giveDiamondToGuard() {
-        //-- Check if player is at castle entrance
+        // -- Check if player is at castle entrance
         if (player.getY() == 3) {
             Item diamond = null;
             for (Item item : player.getInventory()) {
@@ -425,7 +433,8 @@ public class Game {
 
         // Check for enemies
         if (player.getY() == 1 && player.getX() == 0 && dungeonEnemy.isAlive()) {
-            sb.append("   ⚔️ Enemy: ").append(dungeonEnemy.getName()).append(" (HP: ").append(dungeonEnemy.getHealth()).append(")\n");
+            sb.append("   ⚔️ Enemy: ").append(dungeonEnemy.getName()).append(" (HP: ").append(dungeonEnemy.getHealth())
+                    .append(")\n");
         }
 
         lastActionMessage = sb.toString();

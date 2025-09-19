@@ -35,11 +35,11 @@ public class CombatService {
         int playerDamage = calculateDamage(player);
         enemy.takeDamage(playerDamage);
 
-        result.append("⚔️ You attack ").append(enemy.getName())
+        result.append("⚔️ You attacked ").append(enemy.getName())
               .append(" for ").append(playerDamage).append(" damage!");
 
         if (!enemy.isAlive()) {
-            result.append(" 🎉 You defeated it!");
+            result.append("☠️ And you winn! the key is urs 🔑");
             return result.toString();
         }
 
@@ -47,7 +47,7 @@ public class CombatService {
         int enemyDamage = calculateEnemyDamage(enemy);
         player.takeDamage(enemyDamage);
 
-        result.append(" 💀 It attacks you for ").append(enemyDamage).append(" damage!");
+        result.append(" He It attacked you for ").append(enemyDamage).append(" damage!");
 
         if (!player.isAlive()) {
             result.append(" 💀 You have been defeated!");

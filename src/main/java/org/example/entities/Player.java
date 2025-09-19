@@ -150,9 +150,6 @@ public class Player {
         for (int i = 0; i < inventory.size(); i++) {
             Item item = inventory.get(i);
             sb.append(item.getName());
-            if (item.equals(equippedWeapon)) {
-                sb.append("(equipped)");
-            }
             if (i < inventory.size() - 1) {
                 sb.append(", ");
             }
