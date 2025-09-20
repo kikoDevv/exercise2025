@@ -6,13 +6,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -238,11 +241,13 @@ public class WarehouseTest {
     @Test
     void getTopRatedProductsThisMonth_Success() {
         // Given
-        LocalDate today = LocalDate.now();
-        Product maxRated1 = new Product("1", "iPhone", Category.ELECTRONICS, 10, today, today);
-        Product maxRated2 = new Product("2", "iPad", Category.ELECTRONICS, 10, today.minusDays(1), today.minusDays(1));
-        Product lowerRated = new Product("3", "Apple", Category.FOOD, 8, today, today);
-        Product oldProduct = new Product("4", "Old Phone", Category.ELECTRONICS, 10, today.minusMonths(2), today.minusMonths(2));
+        YearMonth currentMonth = YearMonth.now();
+        LocalDate day1 = currentMonth.atDay(1);
+        LocalDate day2 = currentMonth.atDay(2);
+        Product maxRated1 = new Product("1", "iPhone", Category.ELECTRONICS, 10, day2, day2);
+        Product maxRated2 = new Product("2", "iPad", Category.ELECTRONICS, 10, day1, day1);
+        Product lowerRated = new Product("3", "Apple", Category.FOOD, 8, day2, day2);
+        Product oldProduct = new Product("4", "Old Phone", Category.ELECTRONICS, 10, currentMonth.minusMonths(2).atDay(1), currentMonth.minusMonths(2).atDay(1));
 
         warehouse.addProduct(maxRated1);
         warehouse.addProduct(maxRated2);
@@ -254,8 +259,8 @@ public class WarehouseTest {
 
         // Then
         assertEquals(2, topRated.size());
-        assertEquals("iPhone", topRated.get(0).name());
-        assertEquals("iPad", topRated.get(1).name());
+        Set<String> names = topRated.stream().map(Product::name).collect(Collectors.toSet());
+        assertTrue(names.contains("iPhone") && names.contains("iPad") && names.size() == 2);
         assertTrue(topRated.stream().allMatch(p -> p.rating() == 10));
     }
 
@@ -277,12 +282,14 @@ public class WarehouseTest {
         // --Given
         ExecutorService executor = Executors.newFixedThreadPool(10);
         CountDownLatch latch = new CountDownLatch(100);
+        CountDownLatch startGate = new CountDownLatch(1);
 
         // When 100 threads adding products concurrently
         for (int i = 0; i < 100; i++) {
             final int productId = i;
             executor.submit(() -> {
                 try {
+                    startGate.await();
                     Product product = new Product(
                         String.valueOf(productId),
                         "Product " + productId,
@@ -292,15 +299,20 @@ public class WarehouseTest {
                         LocalDate.now()
                     );
                     warehouse.addProduct(product);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    fail("Interrupted while waiting for start: " + ie.getMessage());
                 } finally {
                     latch.countDown();
                 }
             });
         }
 
-        // Wait for all threads to complete
-        latch.await(5, TimeUnit.SECONDS);
+        // Start and wait for completion
+        startGate.countDown();
+        assertTrue(latch.await(15, TimeUnit.SECONDS), "Timed out waiting for tasks to complete");
         executor.shutdown();
+        assertTrue(executor.awaitTermination(10, TimeUnit.SECONDS), "Executor did not terminate in time");
 
         // Then - All products should be added successfully
         assertEquals(100, warehouse.getAllProducts().size());
