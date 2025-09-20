@@ -17,7 +17,7 @@ public class Warehouse {
 
     public void addProduct(Product product) {
         if (product == null) {
-            throw new IllegalArgumentException("Product cannot be null");
+            throw new IllegalArgumentException("Product cannot be empty");
         }
         if (product.id() == null || product.id().trim().isEmpty()) {
             throw new IllegalArgumentException("Product ID cannot be empty");
@@ -132,7 +132,7 @@ public class Warehouse {
         // Find the maximum rating among products created this month
         OptionalInt maxRating = products.values().stream()
                 .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
-                                 !product.createdDate().isAfter(endOfMonth))
+                !product.createdDate().isAfter(endOfMonth))
                 .mapToInt(Product::rating)
                 .max();
 
@@ -142,7 +142,7 @@ public class Warehouse {
 
         return products.values().stream()
                 .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
-                                 !product.createdDate().isAfter(endOfMonth))
+                !product.createdDate().isAfter(endOfMonth))
                 .filter(product -> product.rating() == maxRating.getAsInt())
                 .sorted(Comparator.comparing(Product::createdDate).reversed())
                 .collect(Collectors.toList());

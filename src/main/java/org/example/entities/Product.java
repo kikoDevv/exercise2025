@@ -18,6 +18,7 @@ public record Product(
     Objects.requireNonNull(createdDate, "Created date cannot be null");
     Objects.requireNonNull(modifiedDate, "Modified date cannot be null");
 
+    
     if (name.trim().isEmpty()) {
       throw new IllegalArgumentException("Name cannot be empty");
     }

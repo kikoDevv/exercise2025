@@ -21,6 +21,7 @@ public class WarehouseConcurrencyTest {
         Warehouse warehouse = new Warehouse();
         ExecutorService executor = Executors.newFixedThreadPool(50);
         CountDownLatch latch = new CountDownLatch(100);
+        CountDownLatch startGate = new CountDownLatch(1);
         AtomicInteger successCount = new AtomicInteger(0);
         AtomicInteger duplicateCount = new AtomicInteger(0);
 
@@ -28,6 +29,7 @@ public class WarehouseConcurrencyTest {
         for (int i = 0; i < 100; i++) {
             executor.submit(() -> {
                 try {
+                    startGate.await();
                     Product product = new Product(
                         "DUPLICATE_ID", // Same ID for all threads
                         "Test Product",
@@ -42,15 +44,20 @@ public class WarehouseConcurrencyTest {
                     if (e.getMessage().contains("already exists")) {
                         duplicateCount.incrementAndGet();
                     }
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    fail("Interrupted while waiting for start: " + ie.getMessage());
                 } finally {
                     latch.countDown();
                 }
             });
         }
 
-        // Wait for all threads to complete
-        latch.await(10, TimeUnit.SECONDS);
+        // Fire the start gun and wait for completion
+        startGate.countDown();
+        assertTrue(latch.await(15, TimeUnit.SECONDS), "Timed out waiting for tasks to complete");
         executor.shutdown();
+        assertTrue(executor.awaitTermination(10, TimeUnit.SECONDS), "Executor did not terminate in time");
 
         // Then - Only one should succeed, 99 should fail with duplicate error
         assertEquals(1, successCount.get(), "Only one thread should successfully add the product");
@@ -65,6 +72,7 @@ public class WarehouseConcurrencyTest {
         Warehouse warehouse = new Warehouse();
         ExecutorService executor = Executors.newFixedThreadPool(20);
         CountDownLatch latch = new CountDownLatch(50);
+        CountDownLatch startGate = new CountDownLatch(1);
         AtomicInteger successCount = new AtomicInteger(0);
 
         // When - 50 threads add products with unique IDs
@@ -72,6 +80,7 @@ public class WarehouseConcurrencyTest {
             final int productId = i;
             executor.submit(() -> {
                 try {
+                    startGate.await();
                     Product product = new Product(
                         "UNIQUE_ID_" + productId,
                         "Product " + productId,
@@ -82,6 +91,9 @@ public class WarehouseConcurrencyTest {
                     );
                     warehouse.addProduct(product);
                     successCount.incrementAndGet();
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    fail("Interrupted while waiting for start: " + ie.getMessage());
                 } catch (Exception e) {
                     // Should not happen with unique IDs
                     fail("Unexpected exception: " + e.getMessage());
@@ -91,9 +103,11 @@ public class WarehouseConcurrencyTest {
             });
         }
 
-        // Wait for all threads to complete
-        latch.await(10, TimeUnit.SECONDS);
+        // Fire the start gun and wait for completion
+        startGate.countDown();
+        assertTrue(latch.await(15, TimeUnit.SECONDS), "Timed out waiting for tasks to complete");
         executor.shutdown();
+        assertTrue(executor.awaitTermination(10, TimeUnit.SECONDS), "Executor did not terminate in time");
 
         // Then - All should succeed
         assertEquals(50, successCount.get(), "All threads should successfully add their products");
@@ -116,6 +130,7 @@ public class WarehouseConcurrencyTest {
 
         ExecutorService executor = Executors.newFixedThreadPool(20);
         CountDownLatch latch = new CountDownLatch(100);
+        CountDownLatch startGate = new CountDownLatch(1);
         AtomicInteger successCount = new AtomicInteger(0);
 
         // When 100 threads try to update the same product concurrently
@@ -123,6 +138,7 @@ public class WarehouseConcurrencyTest {
             final int updateId = i;
             executor.submit(() -> {
                 try {
+                    startGate.await();
                     warehouse.updateProduct(
                         "CONCURRENT_UPDATE",
                         "Updated Product " + updateId,
@@ -130,6 +146,9 @@ public class WarehouseConcurrencyTest {
                         updateId % 11 // 0-10 rating range
                     );
                     successCount.incrementAndGet();
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    fail("Interrupted while waiting for start: " + ie.getMessage());
                 } catch (Exception e) {
                     fail("Unexpected exception during concurrent update: " + e.getMessage());
                 } finally {
@@ -138,9 +157,11 @@ public class WarehouseConcurrencyTest {
             });
         }
 
-        // Wait for all threads to complete
-        latch.await(10, TimeUnit.SECONDS);
+        // Fire the start gun and wait for completion
+        startGate.countDown();
+        assertTrue(latch.await(15, TimeUnit.SECONDS), "Timed out waiting for tasks to complete");
         executor.shutdown();
+        assertTrue(executor.awaitTermination(10, TimeUnit.SECONDS), "Executor did not terminate in time");
 
         // Then - All updates should succeed, final state should be consistent
         assertEquals(100, successCount.get(), "All update operations should succeed");
