@@ -25,10 +25,10 @@ public class Warehouse {
         if (product.name() == null || product.name().trim().isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
-        if (products.containsKey(product.id())) {
+        Product previous = products.putIfAbsent(product.id(), product);
+        if (previous != null) {
             throw new IllegalArgumentException("Product with ID " + product.id() + " already exists");
         }
-        products.put(product.id(), product);
     }
 
     public void updateProduct(String id, String name, Category category, int rating) {
@@ -38,14 +38,19 @@ public class Warehouse {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
-
-        Product existingProduct = products.get(id);
-        if (existingProduct == null) {
-            throw new IllegalArgumentException("Product with ID " + id + " not found");
+        if (category == null) {
+            throw new IllegalArgumentException("Category cannot be null");
+        }
+        if (rating < 0 || rating > 10) {
+            throw new IllegalArgumentException("Rating must be between 0 and 10");
         }
 
-        Product updatedProduct = existingProduct.withUpdatedFields(name, category, rating);
-        products.put(id, updatedProduct);
+        products.compute(id, (_, existing) -> {
+            if (existing == null) {
+                throw new IllegalArgumentException("Product with ID " + id + " not found");
+            }
+            return existing.withUpdatedFields(name, category, rating);
+        });
     }
 
     public List<Product> getAllProducts() {

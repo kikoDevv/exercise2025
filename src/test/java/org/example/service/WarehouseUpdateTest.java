@@ -54,7 +54,7 @@ public class WarehouseUpdateTest {
 
     @Test
     void updateProduct_InvalidRating_ThrowsException() {
-        // When and Then
+        // When & Then
         assertThrows(IllegalArgumentException.class, () -> {
             warehouse.updateProduct("1", "iPhone 15 Pro", Category.ELECTRONICS, 11);
         });
@@ -66,9 +66,56 @@ public class WarehouseUpdateTest {
 
     @Test
     void updateProduct_NonExistentId_ThrowsException() {
-        // When an Then
+        // When & Then
         assertThrows(IllegalArgumentException.class, () -> {
             warehouse.updateProduct("999", "Some Product", Category.ELECTRONICS, 8);
         });
+    }
+
+    @Test
+    void updateProduct_NullCategory_ThrowsException() {
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            warehouse.updateProduct("1", "iPhone 15 Pro", null, 8);
+        });
+        assertTrue(exception.getMessage().contains("Category cannot be null"));
+
+        // Verify original product is unchanged
+        assertEquals("iPhone 15", warehouse.getProductById("1").get().name());
+    }
+
+    @Test
+    void updateProduct_InvalidRatingTooLow_ThrowsException() {
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            warehouse.updateProduct("1", "iPhone 15 Pro", Category.ELECTRONICS, -1);
+        });
+        assertTrue(exception.getMessage().contains("Rating must be between 0 and 10"));
+
+        // Verify original product is unchanged
+        assertEquals(9, warehouse.getProductById("1").get().rating());
+    }
+
+    @Test
+    void updateProduct_InvalidRatingTooHigh_ThrowsException() {
+        // When & Then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            warehouse.updateProduct("1", "iPhone 15 Pro", Category.ELECTRONICS, 11);
+        });
+        assertTrue(exception.getMessage().contains("Rating must be between 0 and 10"));
+
+        // Verify original product is unchanged
+        assertEquals(9, warehouse.getProductById("1").get().rating());
+    }
+
+    @Test
+    void updateProduct_ValidRatingBoundaries_Success() {
+        // Test minimum valid rating
+        warehouse.updateProduct("1", "iPhone 15 Pro", Category.ELECTRONICS, 0);
+        assertEquals(0, warehouse.getProductById("1").get().rating());
+
+        // Test maximum valid rating
+        warehouse.updateProduct("1", "iPhone 15 Pro Max", Category.ELECTRONICS, 10);
+        assertEquals(10, warehouse.getProductById("1").get().rating());
     }
 }
