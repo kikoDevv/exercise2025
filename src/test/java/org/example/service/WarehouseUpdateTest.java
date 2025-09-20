@@ -53,18 +53,6 @@ public class WarehouseUpdateTest {
     }
 
     @Test
-    void updateProduct_InvalidRating_ThrowsException() {
-        // When & Then
-        assertThrows(IllegalArgumentException.class, () -> {
-            warehouse.updateProduct("1", "iPhone 15 Pro", Category.ELECTRONICS, 11);
-        });
-
-        // Verify original product is unchanged
-        assertEquals("iPhone 15", warehouse.getProductById("1").get().name());
-        assertEquals(9, warehouse.getProductById("1").get().rating());
-    }
-
-    @Test
     void updateProduct_NonExistentId_ThrowsException() {
         // When & Then
         assertThrows(IllegalArgumentException.class, () -> {

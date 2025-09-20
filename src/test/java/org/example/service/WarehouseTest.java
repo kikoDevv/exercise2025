@@ -70,7 +70,9 @@ public class WarehouseTest {
             warehouse.addProduct(productWithEmptyId);
         });
         assertTrue(exception.getMessage().contains("Product ID cannot be empty"));
-    }    @Test
+    }
+
+    @Test
     void addProduct_NullProductId_ThrowsException() {
         // When & Then - Product record validation catches null ID
         assertThrows(NullPointerException.class, () -> {
@@ -83,7 +85,9 @@ public class WarehouseTest {
                 LocalDate.now()
             );
         });
-    }    @Test
+    }
+
+    @Test
     void addProduct_DuplicateId_ThrowsException() {
         // Given
         warehouse.addProduct(testProduct);
