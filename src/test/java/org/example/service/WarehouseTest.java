@@ -298,9 +298,10 @@ public class WarehouseTest {
             });
         }
 
-        // Wait for all threads to complete
-        latch.await(5, TimeUnit.SECONDS);
+        
+        assertTrue(latch.await(5, TimeUnit.SECONDS), "Timed out waiting for producers to finish");
         executor.shutdown();
+        assertTrue(executor.awaitTermination(1, TimeUnit.SECONDS), "Executor did not terminate");
 
         // Then - All products should be added successfully
         assertEquals(100, warehouse.getAllProducts().size());

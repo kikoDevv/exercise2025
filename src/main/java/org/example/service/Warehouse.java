@@ -126,9 +126,9 @@ public class Warehouse {
 
      // Return products with max rating, created this month, sorted by newest first
     public List<Product> getTopRatedProductsThisMonth() {
-        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
-        LocalDate endOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
-
+        LocalDate now = LocalDate.now();
+        LocalDate startOfMonth = now.withDayOfMonth(1);
+        LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth());
         // Find the maximum rating among products created this month
         OptionalInt maxRating = products.values().stream()
                 .filter(product -> !product.createdDate().isBefore(startOfMonth) &&

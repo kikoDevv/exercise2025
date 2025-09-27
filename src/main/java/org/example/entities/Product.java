@@ -160,7 +160,7 @@ public class Product implements Sellable {
     return rating == product.rating &&
            Objects.equals(id, product.id) &&
            Objects.equals(name, product.name) &&
-           category == product.category &&
+           Objects.equals(category, product.category) &&
            Objects.equals(price, product.price) &&
            Objects.equals(createdDate, product.createdDate) &&
            Objects.equals(modifiedDate, product.modifiedDate);

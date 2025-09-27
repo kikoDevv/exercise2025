@@ -54,6 +54,9 @@ public class InMemoryProductRepository implements ProductRepository {
         if (product.id() == null || product.id().trim().isEmpty()) {
             throw new IllegalArgumentException("Product ID cannot be empty");
         }
+        if (product.name() == null || product.name().trim().isEmpty()) {
+            throw new IllegalArgumentException("Product name cannot be empty");
+        }
 
         products.compute(product.id(), (key, existing) -> {
             if (existing == null) {

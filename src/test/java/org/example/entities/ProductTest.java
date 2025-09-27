@@ -106,6 +106,7 @@ public class ProductTest {
 
         // When
         Product updated = baseProduct.withUpdatedFields("iPad Pro", Category.ELECTRONICS, 10);
+        LocalDate afterCall = LocalDate.now();
 
         // Then
         assertEquals("iPad Pro", updated.name());
@@ -113,8 +114,9 @@ public class ProductTest {
         assertEquals(10, updated.rating());
         assertEquals(testDate, updated.createdDate()); // Should remain unchanged
 
-        // Modified date should be today (or after our before timestamp)
-        assertTrue(!updated.modifiedDate().isBefore(beforeCall));
+    
+        assertFalse(updated.modifiedDate().isBefore(beforeCall));
+        assertFalse(updated.modifiedDate().isAfter(afterCall));
     }
 
     @Test
