@@ -24,14 +24,14 @@ public class WarehouseTest {
     @BeforeEach
     void setUp() {
         warehouse = new Warehouse();
-        testProduct = new Product(
-            "1",
-            "iPhone 15",
-            Category.ELECTRONICS,
-            9,
-            LocalDate.now(),
-            LocalDate.now()
-        );
+        testProduct = new Product.Builder()
+            .id("1")
+            .name("iPhone 15")
+            .category(Category.ELECTRONICS)
+            .rating(9)
+            .createdDate(LocalDate.now())
+            .modifiedDate(LocalDate.now())
+            .build();
     }
 
     @Test
@@ -56,14 +56,14 @@ public class WarehouseTest {
     @Test
     void addProduct_EmptyProductId_ThrowsException() {
         // Given
-        Product productWithEmptyId = new Product(
-            "   ", // Whitespace-only ID
-            "iPhone 15",
-            Category.ELECTRONICS,
-            9,
-            LocalDate.now(),
-            LocalDate.now()
-        );
+        Product productWithEmptyId = new Product.Builder()
+            .id("   ") // Whitespace-only ID
+            .name("iPhone 15")
+            .category(Category.ELECTRONICS)
+            .rating(9)
+            .createdDate(LocalDate.now())
+            .modifiedDate(LocalDate.now())
+            .build();
 
         // When & Then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -74,16 +74,16 @@ public class WarehouseTest {
 
     @Test
     void addProduct_NullProductId_ThrowsException() {
-        // When & Then - Product record validation catches null ID
+        // When & Then - Product Builder validation catches null ID
         assertThrows(NullPointerException.class, () -> {
-            new Product(
-                null,
-                "iPhone 15",
-                Category.ELECTRONICS,
-                9,
-                LocalDate.now(),
-                LocalDate.now()
-            );
+            new Product.Builder()
+                .id(null)
+                .name("iPhone 15")
+                .category(Category.ELECTRONICS)
+                .rating(9)
+                .createdDate(LocalDate.now())
+                .modifiedDate(LocalDate.now())
+                .build();
         });
     }
 
@@ -91,14 +91,14 @@ public class WarehouseTest {
     void addProduct_DuplicateId_ThrowsException() {
         // Given
         warehouse.addProduct(testProduct);
-        Product duplicateProduct = new Product(
-            "1", // Same ID as testProduct
-            "iPad Pro",
-            Category.ELECTRONICS,
-            8,
-            LocalDate.now(),
-            LocalDate.now()
-        );
+        Product duplicateProduct = new Product.Builder()
+            .id("1") // Same ID as testProduct
+            .name("iPad Pro")
+            .category(Category.ELECTRONICS)
+            .rating(8)
+            .createdDate(LocalDate.now())
+            .modifiedDate(LocalDate.now())
+            .build();
 
         // When & Then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -146,9 +146,9 @@ public class WarehouseTest {
     @Test
     void getCategoriesWithProducts_Success() {
         // Given
-        Product electronics = new Product("1", "iPhone", Category.ELECTRONICS, 9, LocalDate.now(), LocalDate.now());
-        Product food = new Product("2", "Apple", Category.FOOD, 8, LocalDate.now(), LocalDate.now());
-        Product anotherElectronics = new Product("3", "iPad", Category.ELECTRONICS, 10, LocalDate.now(), LocalDate.now());
+        Product electronics = new Product.Builder().id("1").name("iPhone").category(Category.ELECTRONICS).rating(9).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
+        Product food = new Product.Builder().id("2").name("Apple").category(Category.FOOD).rating(8).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
+        Product anotherElectronics = new Product.Builder().id("3").name("iPad").category(Category.ELECTRONICS).rating(10).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
 
         warehouse.addProduct(electronics);
         warehouse.addProduct(food);
@@ -175,9 +175,9 @@ public class WarehouseTest {
     @Test
     void countProductsInCategory_Success() {
         // Given
-        Product electronics1 = new Product("1", "iPhone", Category.ELECTRONICS, 9, LocalDate.now(), LocalDate.now());
-        Product electronics2 = new Product("2", "iPad", Category.ELECTRONICS, 10, LocalDate.now(), LocalDate.now());
-        Product food = new Product("3", "Apple", Category.FOOD, 8, LocalDate.now(), LocalDate.now());
+        Product electronics1 = new Product.Builder().id("1").name("iPhone").category(Category.ELECTRONICS).rating(9).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
+        Product electronics2 = new Product.Builder().id("2").name("iPad").category(Category.ELECTRONICS).rating(10).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
+        Product food = new Product.Builder().id("3").name("Apple").category(Category.FOOD).rating(8).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
 
         warehouse.addProduct(electronics1);
         warehouse.addProduct(electronics2);
@@ -206,10 +206,10 @@ public class WarehouseTest {
     @Test
     void getProductInitialsMap_Success() {
         // Given
-        Product iPhone = new Product("1", "iPhone", Category.ELECTRONICS, 9, LocalDate.now(), LocalDate.now());
-        Product iPad = new Product("2", "iPad", Category.ELECTRONICS, 10, LocalDate.now(), LocalDate.now());
-        Product apple = new Product("3", "Apple", Category.FOOD, 8, LocalDate.now(), LocalDate.now());
-        Product banana = new Product("4", "Banana", Category.FOOD, 7, LocalDate.now(), LocalDate.now());
+        Product iPhone = new Product.Builder().id("1").name("iPhone").category(Category.ELECTRONICS).rating(9).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
+        Product iPad = new Product.Builder().id("2").name("iPad").category(Category.ELECTRONICS).rating(10).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
+        Product apple = new Product.Builder().id("3").name("Apple").category(Category.FOOD).rating(8).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
+        Product banana = new Product.Builder().id("4").name("Banana").category(Category.FOOD).rating(7).createdDate(LocalDate.now()).modifiedDate(LocalDate.now()).build();
 
         warehouse.addProduct(iPhone);
         warehouse.addProduct(iPad);
@@ -239,10 +239,10 @@ public class WarehouseTest {
     void getTopRatedProductsThisMonth_Success() {
         // Given
         LocalDate today = LocalDate.now();
-        Product maxRated1 = new Product("1", "iPhone", Category.ELECTRONICS, 10, today, today);
-        Product maxRated2 = new Product("2", "iPad", Category.ELECTRONICS, 10, today.minusDays(1), today.minusDays(1));
-        Product lowerRated = new Product("3", "Apple", Category.FOOD, 8, today, today);
-        Product oldProduct = new Product("4", "Old Phone", Category.ELECTRONICS, 10, today.minusMonths(2), today.minusMonths(2));
+        Product maxRated1 = new Product.Builder().id("1").name("iPhone").category(Category.ELECTRONICS).rating(10).createdDate(today).modifiedDate(today).build();
+        Product maxRated2 = new Product.Builder().id("2").name("iPad").category(Category.ELECTRONICS).rating(10).createdDate(today.minusDays(1)).modifiedDate(today.minusDays(1)).build();
+        Product lowerRated = new Product.Builder().id("3").name("Apple").category(Category.FOOD).rating(8).createdDate(today).modifiedDate(today).build();
+        Product oldProduct = new Product.Builder().id("4").name("Old Phone").category(Category.ELECTRONICS).rating(10).createdDate(today.minusMonths(2)).modifiedDate(today.minusMonths(2)).build();
 
         warehouse.addProduct(maxRated1);
         warehouse.addProduct(maxRated2);
@@ -262,7 +262,7 @@ public class WarehouseTest {
     @Test
     void getTopRatedProductsThisMonth_NoProductsThisMonth() {
         // Given
-        Product oldProduct = new Product("1", "Old Phone", Category.ELECTRONICS, 10, LocalDate.now().minusMonths(2), LocalDate.now().minusMonths(2));
+        Product oldProduct = new Product.Builder().id("1").name("Old Phone").category(Category.ELECTRONICS).rating(10).createdDate(LocalDate.now().minusMonths(2)).modifiedDate(LocalDate.now().minusMonths(2)).build();
         warehouse.addProduct(oldProduct);
 
         // When
@@ -283,14 +283,14 @@ public class WarehouseTest {
             final int productId = i;
             executor.submit(() -> {
                 try {
-                    Product product = new Product(
-                        String.valueOf(productId),
-                        "Product " + productId,
-                        Category.ELECTRONICS,
-                        5,
-                        LocalDate.now(),
-                        LocalDate.now()
-                    );
+                    Product product = new Product.Builder()
+                        .id(String.valueOf(productId))
+                        .name("Product " + productId)
+                        .category(Category.ELECTRONICS)
+                        .rating(5)
+                        .createdDate(LocalDate.now())
+                        .modifiedDate(LocalDate.now())
+                        .build();
                     warehouse.addProduct(product);
                 } finally {
                     latch.countDown();

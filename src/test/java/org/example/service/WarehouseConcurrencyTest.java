@@ -28,14 +28,14 @@ public class WarehouseConcurrencyTest {
         for (int i = 0; i < 100; i++) {
             executor.submit(() -> {
                 try {
-                    Product product = new Product(
-                        "DUPLICATE_ID", // Same ID for all threads
-                        "Test Product",
-                        Category.ELECTRONICS,
-                        5,
-                        LocalDate.now(),
-                        LocalDate.now()
-                    );
+                    Product product = new Product.Builder()
+                        .id("DUPLICATE_ID") // Same ID for all threads
+                        .name("Test Product")
+                        .category(Category.ELECTRONICS)
+                        .rating(5)
+                        .createdDate(LocalDate.now())
+                        .modifiedDate(LocalDate.now())
+                        .build();
                     warehouse.addProduct(product);
                     successCount.incrementAndGet();
                 } catch (IllegalArgumentException e) {
@@ -72,14 +72,14 @@ public class WarehouseConcurrencyTest {
             final int productId = i;
             executor.submit(() -> {
                 try {
-                    Product product = new Product(
-                        "UNIQUE_ID_" + productId,
-                        "Product " + productId,
-                        Category.ELECTRONICS,
-                        5,
-                        LocalDate.now(),
-                        LocalDate.now()
-                    );
+                    Product product = new Product.Builder()
+                        .id("UNIQUE_ID_" + productId)
+                        .name("Product " + productId)
+                        .category(Category.ELECTRONICS)
+                        .rating(5)
+                        .createdDate(LocalDate.now())
+                        .modifiedDate(LocalDate.now())
+                        .build();
                     warehouse.addProduct(product);
                     successCount.incrementAndGet();
                 } catch (Exception e) {
@@ -104,14 +104,14 @@ public class WarehouseConcurrencyTest {
     void updateProduct_ConcurrentUpdates_AtomicOperation() throws InterruptedException {
         // Given
         Warehouse warehouse = new Warehouse();
-        Product initialProduct = new Product(
-            "CONCURRENT_UPDATE",
-            "Initial Product",
-            Category.ELECTRONICS,
-            5,
-            LocalDate.now().minusDays(1),
-            LocalDate.now().minusDays(1)
-        );
+        Product initialProduct = new Product.Builder()
+            .id("CONCURRENT_UPDATE")
+            .name("Initial Product")
+            .category(Category.ELECTRONICS)
+            .rating(5)
+            .createdDate(LocalDate.now().minusDays(1))
+            .modifiedDate(LocalDate.now().minusDays(1))
+            .build();
         warehouse.addProduct(initialProduct);
 
         ExecutorService executor = Executors.newFixedThreadPool(20);

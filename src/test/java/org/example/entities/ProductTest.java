@@ -15,14 +15,14 @@ public class ProductTest {
     @BeforeEach
     void setUp() {
         testDate = LocalDate.of(2025, 9, 20);
-        baseProduct = new Product(
-            "1",
-            "iPhone 15",
-            Category.ELECTRONICS,
-            9,
-            testDate,
-            testDate
-        );
+        baseProduct = new Product.Builder()
+            .id("1")
+            .name("iPhone 15")
+            .category(Category.ELECTRONICS)
+            .rating(9)
+            .createdDate(testDate)
+            .modifiedDate(testDate)
+            .build();
     }
 
     @Test

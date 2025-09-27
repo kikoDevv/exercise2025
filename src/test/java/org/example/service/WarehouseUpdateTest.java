@@ -18,14 +18,14 @@ public class WarehouseUpdateTest {
     void setUp() {
         warehouse = new Warehouse();
         LocalDate yesterday = LocalDate.now().minusDays(1);
-        testProduct = new Product(
-            "1",
-            "iPhone 15",
-            Category.ELECTRONICS,
-            9,
-            yesterday,  // Created yesterday
-            yesterday   // Initially modified yesterday
-        );
+        testProduct = new Product.Builder()
+            .id("1")
+            .name("iPhone 15")
+            .category(Category.ELECTRONICS)
+            .rating(9)
+            .createdDate(yesterday)  // Created yesterday
+            .modifiedDate(yesterday) // Initially modified yesterday
+            .build();
         warehouse.addProduct(testProduct);
     }
 
