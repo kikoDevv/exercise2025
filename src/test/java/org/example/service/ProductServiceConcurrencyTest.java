@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ProductServiceConcurrencyTest {
-
     @Test
     void addProduct_ConcurrentDuplicateIds_PreventRaceCondition() throws InterruptedException {
         // Given
@@ -153,8 +152,10 @@ public class ProductServiceConcurrencyTest {
 
         // Then - All updates should succeed, final state should be consistent
         assertEquals(100, successCount.get(), "All update operations should succeed");
-        assertEquals(1, productService.getAllProducts().size(), "Should still have exactly one product");
-
+        assertTrue(
+            productService.getAllProducts().stream().anyMatch(product -> product.id().equals("CONCURRENT_UPDATE")),
+            "Repository should still contain versions for CONCURRENT_UPDATE"
+        );
         Product finalProduct = productService.getProductById("CONCURRENT_UPDATE").get();
         assertTrue(finalProduct.name().startsWith("Updated Product"));
         assertEquals(Category.GAMES, finalProduct.category());

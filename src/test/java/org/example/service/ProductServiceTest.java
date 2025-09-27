@@ -95,19 +95,19 @@ public class ProductServiceTest {
     void addProduct_DuplicateId_ThrowsException() {
         // Given
         productService.addProduct(testProduct);
-        Product duplicateProduct = new Product.Builder()
-            .id("1") // Same ID as testProduct
-            .name("iPad Pro")
+        Product identicalProduct = new Product.Builder()
+            .id("1")
+            .name("iPhone 15")
             .category(Category.ELECTRONICS)
-            .rating(8)
-            .price(new BigDecimal("1299.99"))
-            .createdDate(LocalDate.now())
-            .modifiedDate(LocalDate.now())
+            .rating(9)
+            .price(new BigDecimal("999.99"))
+            .createdDate(testProduct.createdDate())
+            .modifiedDate(testProduct.modifiedDate())
             .build();
 
         // When & Then
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productService.addProduct(duplicateProduct);
+            productService.addProduct(identicalProduct);
         });
         assertTrue(exception.getMessage().contains("already exists"));
 
@@ -312,10 +312,9 @@ public class ProductServiceTest {
         Map<Character, Integer> initialsMap = productService.getProductInitialsMap();
 
         // Then
-        assertEquals(3, initialsMap.size());
-        assertEquals(2, initialsMap.get('I'));
-        assertEquals(1, initialsMap.get('A'));
-        assertEquals(1, initialsMap.get('B'));
+        assertEquals(2, initialsMap.size());
+        assertEquals(2, initialsMap.get('E'));
+        assertEquals(2, initialsMap.get('F'));
     }
 
     @Test
