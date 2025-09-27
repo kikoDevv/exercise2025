@@ -312,9 +312,10 @@ public class ProductServiceTest {
         Map<Character, Integer> initialsMap = productService.getProductInitialsMap();
 
         // Then
-        assertEquals(2, initialsMap.size());
-        assertEquals(2, initialsMap.get('E'));
-        assertEquals(2, initialsMap.get('F'));
+        assertEquals(3, initialsMap.size());
+        assertEquals(2, initialsMap.get('I'));
+        assertEquals(1, initialsMap.get('A'));
+        assertEquals(1, initialsMap.get('B'));
     }
 
     @Test
