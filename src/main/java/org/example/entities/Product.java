@@ -62,6 +62,10 @@ public class Product implements Sellable {
 
   //-- Builder Pattern --
   public static class Builder {
+    public Builder name(String name) {
+      this.name = name;
+      return this;
+    }
     private String id;
     private String name;
     private Category category;
@@ -71,12 +75,11 @@ public class Product implements Sellable {
     private LocalDate modifiedDate;
 
     public Builder id(String id) {
-      this.id = id;
-      return this;
-    }
-
-    public Builder name(String name) {
-      this.name = name;
+      String normalizedId = Objects.requireNonNull(id, "ID cannot be null").trim();
+      if (normalizedId.isEmpty()) {
+        throw new IllegalArgumentException("ID cannot be empty");
+      }
+      this.id = normalizedId;
       return this;
     }
 
@@ -107,11 +110,14 @@ public class Product implements Sellable {
 
     public Product build() {
       // Set default values if there is not
-      if (createdDate == null) {
-        createdDate = LocalDate.now();
-      }
-      if (modifiedDate == null) {
-        modifiedDate = LocalDate.now();
+      if (createdDate == null || modifiedDate == null) {
+        LocalDate now = LocalDate.now();
+        if (createdDate == null) {
+          createdDate = now;
+        }
+        if (modifiedDate == null) {
+          modifiedDate = now;
+        }
       }
       if (price == null) {
         price = BigDecimal.ZERO;

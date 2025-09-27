@@ -52,9 +52,15 @@ public class ProductServiceConcurrencyTest {
             });
         }
 
-        // Wait for all threads to complete
-        latch.await(10, TimeUnit.SECONDS);
+
+    try {
+        assertTrue(latch.await(10, TimeUnit.SECONDS), "Timed out waiting for tasks to finish");
+    } finally {
         executor.shutdown();
+        if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+            executor.shutdownNow();
+        }
+    }
 
         // Then - Only one should succeed, 99 should fail with duplicate error
         assertEquals(1, successCount.get(), "Only one thread should successfully add the product");
@@ -97,9 +103,15 @@ public class ProductServiceConcurrencyTest {
             });
         }
 
-        // Wait for all threads to complete
-        latch.await(10, TimeUnit.SECONDS);
+    // Wait for all threads to complete and ensure executor termination
+    try {
+        assertTrue(latch.await(10, TimeUnit.SECONDS), "Timed out waiting for tasks to finish");
+    } finally {
         executor.shutdown();
+        if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+            executor.shutdownNow();
+        }
+    }
 
         // Then - All should succeed
         assertEquals(50, successCount.get(), "All threads should successfully add their products");
@@ -146,11 +158,14 @@ public class ProductServiceConcurrencyTest {
             });
         }
 
-        // Wait for all threads to complete
-        latch.await(10, TimeUnit.SECONDS);
+    try {
+        assertTrue(latch.await(10, TimeUnit.SECONDS), "Timed out waiting for tasks to finish");
+    } finally {
         executor.shutdown();
-
-        // Then - All updates should succeed, final state should be consistent
+        if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+            executor.shutdownNow();
+        }
+    }
         assertEquals(100, successCount.get(), "All update operations should succeed");
         assertTrue(
             productService.getAllProducts().stream().anyMatch(product -> product.id().equals("CONCURRENT_UPDATE")),

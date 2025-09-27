@@ -108,21 +108,23 @@ public class ProductService {
         LocalDate startOfMonth = today.withDayOfMonth(1);
         LocalDate endOfMonth = today.withDayOfMonth(today.lengthOfMonth());
 
-        OptionalInt maxRating = productRepository.getAllProducts().stream()
-                .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
-                                 !product.createdDate().isAfter(endOfMonth))
-                .mapToInt(Product::rating)
-                .max();
+    List<Product> snapshot = new ArrayList<>(productRepository.getAllProducts());
+    OptionalInt maxRating = snapshot.stream()
+        .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
+                 !product.createdDate().isAfter(endOfMonth))
+        .mapToInt(Product::rating)
+        .max();
 
-        if (maxRating.isEmpty()) {
-            return new ArrayList<>();
-        }
+    if (maxRating.isEmpty()) {
+        return new ArrayList<>();
+    }
 
-        return productRepository.getAllProducts().stream()
-                .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
-                                 !product.createdDate().isAfter(endOfMonth))
-                .filter(product -> product.rating() == maxRating.getAsInt())
-                .sorted(Comparator.comparing(Product::createdDate).reversed())
-                .collect(Collectors.toList());
+    int targetRating = maxRating.getAsInt();
+    return snapshot.stream()
+        .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
+                 !product.createdDate().isAfter(endOfMonth))
+        .filter(product -> product.rating() == targetRating)
+        .sorted(Comparator.comparing(Product::createdDate).reversed())
+        .collect(Collectors.toList());
     }
 }

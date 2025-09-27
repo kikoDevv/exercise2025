@@ -20,16 +20,20 @@ public class InMemoryProductRepository implements ProductRepository {
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
-        if (product.id() == null || product.id().trim().isEmpty()) {
+        String productId = product.id();
+        if (productId == null || productId.trim().isEmpty()) {
             throw new IllegalArgumentException("Product ID cannot be empty");
+        }
+        if (!productId.equals(productId.trim())) {
+            throw new IllegalArgumentException("Product ID cannot contain leading or trailing whitespace");
         }
         if (product.name() == null || product.name().trim().isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
 
-        Product previous = products.putIfAbsent(product.id(), product);
+        Product previous = products.putIfAbsent(productId, product);
         if (previous != null) {
-            throw new IllegalArgumentException("Product with ID " + product.id() + " already exists");
+            throw new IllegalArgumentException("Product with ID " + productId + " already exists");
         }
     }
 
