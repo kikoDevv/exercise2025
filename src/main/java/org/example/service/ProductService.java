@@ -104,8 +104,9 @@ public class ProductService {
     }
 
     public List<Product> getTopRatedProductsThisMonth() {
-        LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
-        LocalDate endOfMonth = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+        LocalDate today = LocalDate.now();
+        LocalDate startOfMonth = today.withDayOfMonth(1);
+        LocalDate endOfMonth = today.withDayOfMonth(today.lengthOfMonth());
 
         OptionalInt maxRating = productRepository.getAllProducts().stream()
                 .filter(product -> !product.createdDate().isBefore(startOfMonth) &&
