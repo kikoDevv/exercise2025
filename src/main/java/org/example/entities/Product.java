@@ -1,21 +1,24 @@
 package org.example.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Product {
+public class Product implements Sellable {
   private final String id;
   private final String name;
   private final Category category;
   private final int rating;
+  private final BigDecimal price;
   private final LocalDate createdDate;
   private final LocalDate modifiedDate;
 
   // Private constructor - can only be used by the Builder
-  private Product(String id, String name, Category category, int rating, LocalDate createdDate, LocalDate modifiedDate) {
+  private Product(String id, String name, Category category, int rating, BigDecimal price, LocalDate createdDate, LocalDate modifiedDate) {
     Objects.requireNonNull(id, "ID cannot be null");
     Objects.requireNonNull(name, "Name cannot be null");
     Objects.requireNonNull(category, "Category cannot be null");
+    Objects.requireNonNull(price, "Price cannot be null");
     Objects.requireNonNull(createdDate, "Created date cannot be null");
     Objects.requireNonNull(modifiedDate, "Modified date cannot be null");
 
@@ -25,11 +28,15 @@ public class Product {
     if (rating < 0 || rating > 10) {
       throw new IllegalArgumentException("Rating must be between 0 and 10");
     }
+    if (price.compareTo(BigDecimal.ZERO) < 0) {
+      throw new IllegalArgumentException("Price cannot be negative");
+    }
 
     this.id = id;
     this.name = name.trim();
     this.category = category;
     this.rating = rating;
+    this.price = price;
     this.createdDate = createdDate;
     this.modifiedDate = modifiedDate;
   }
@@ -39,8 +46,19 @@ public class Product {
   public String name() { return name; }
   public Category category() { return category; }
   public int rating() { return rating; }
+  public BigDecimal price() { return price; }
   public LocalDate createdDate() { return createdDate; }
   public LocalDate modifiedDate() { return modifiedDate; }
+
+  //-- Sellable interface implementation --
+  @Override
+  public String getId() { return id(); }
+
+  @Override
+  public String getName() { return name(); }
+
+  @Override
+  public BigDecimal getPrice() { return price(); }
 
   //-- Builder Pattern --
   public static class Builder {
@@ -48,6 +66,7 @@ public class Product {
     private String name;
     private Category category;
     private int rating;
+    private BigDecimal price;
     private LocalDate createdDate;
     private LocalDate modifiedDate;
 
@@ -71,6 +90,11 @@ public class Product {
       return this;
     }
 
+    public Builder price(BigDecimal price) {
+      this.price = price;
+      return this;
+    }
+
     public Builder createdDate(LocalDate createdDate) {
       this.createdDate = createdDate;
       return this;
@@ -82,14 +106,19 @@ public class Product {
     }
 
     public Product build() {
-
+      // Set default values if there is not
       if (createdDate == null) {
         createdDate = LocalDate.now();
       }
       if (modifiedDate == null) {
         modifiedDate = LocalDate.now();
       }
-      return new Product(id, name, category, rating, createdDate, modifiedDate);
+      if (price == null) {
+        price = BigDecimal.ZERO;
+      }
+
+
+      return new Product(id, name, category, rating, price, createdDate, modifiedDate);
     }
   }
 
@@ -116,12 +145,13 @@ public class Product {
         .name(newName)
         .category(newCategory)
         .rating(newRating)
+        .price(this.price)
         .createdDate(this.createdDate)
         .modifiedDate(modifiedDate)
         .build();
   }
 
-  //  replacing record functionality 
+  // --replacing record--
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
@@ -131,13 +161,14 @@ public class Product {
            Objects.equals(id, product.id) &&
            Objects.equals(name, product.name) &&
            category == product.category &&
+           Objects.equals(price, product.price) &&
            Objects.equals(createdDate, product.createdDate) &&
            Objects.equals(modifiedDate, product.modifiedDate);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, category, rating, createdDate, modifiedDate);
+    return Objects.hash(id, name, category, rating, price, createdDate, modifiedDate);
   }
 
   @Override
@@ -147,6 +178,7 @@ public class Product {
            ", name='" + name + '\'' +
            ", category=" + category +
            ", rating=" + rating +
+           ", price=" + price +
            ", createdDate=" + createdDate +
            ", modifiedDate=" + modifiedDate +
            '}';
