@@ -67,11 +67,10 @@ public class Warehouse {
     }
 
     public Optional<Product> getProductById(String id) {
-        String normalizedId = (id == null) ? null : id.trim();
-        if (normalizedId == null || normalizedId.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(products.get(normalizedId));
+        if (id == null) return Optional.empty();
+        String normalized = id.trim();
+        if (normalized.isEmpty()) return Optional.empty();
+        return Optional.ofNullable(products.get(normalized));
     }
 
     public List<Product> getProductsByCategorySorted(Category category) {
