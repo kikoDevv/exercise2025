@@ -36,10 +36,13 @@ public class Warehouse {
     }
 
     public void updateProduct(String id, String name, Category category, int rating) {
-        if (id == null || id.trim().isEmpty()) {
+        String normalizedId = (id == null) ? null : id.trim();
+        String normalizedName = (name == null) ? null : name.trim();
+
+        if (normalizedId == null || normalizedId.isEmpty()) {
             throw new IllegalArgumentException("Product ID cannot be empty");
         }
-        if (name == null || name.trim().isEmpty()) {
+        if (normalizedName == null || normalizedName.isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
         if (category == null) {
@@ -50,12 +53,12 @@ public class Warehouse {
         }
 
         @SuppressWarnings("unused")
-        var computeResult = products.compute(id, (key, existing) -> {
+        var computeResult = products.compute(normalizedId, (key, existing) -> {
 
             if (existing == null) {
-                throw new IllegalArgumentException("Product with ID " + id + " not found");
+                throw new IllegalArgumentException("Product with ID " + normalizedId + " not found");
             }
-            return existing.withUpdatedFields(name.trim(), category, rating);
+            return existing.withUpdatedFields(normalizedName, category, rating);
         });
     }
 
@@ -64,10 +67,11 @@ public class Warehouse {
     }
 
     public Optional<Product> getProductById(String id) {
-        if (id == null || id.trim().isEmpty()) {
+        String normalizedId = (id == null) ? null : id.trim();
+        if (normalizedId == null || normalizedId.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.ofNullable(products.get(id));
+        return Optional.ofNullable(products.get(normalizedId));
     }
 
     public List<Product> getProductsByCategorySorted(Category category) {
