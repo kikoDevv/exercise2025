@@ -31,6 +31,10 @@ public class WarehouseUpdateTest {
 
     @Test
     void updateProduct_Success() {
+        // Given - store the original createdDate before update
+        LocalDate originalCreatedDate = warehouse.getProductById("1").get().createdDate();
+        LocalDate originalModifiedDate = warehouse.getProductById("1").get().modifiedDate();
+
         // When
         warehouse.updateProduct("1", "iPhone 15 Pro", Category.ELECTRONICS, 10);
 
@@ -38,7 +42,13 @@ public class WarehouseUpdateTest {
         Product updated = warehouse.getProductById("1").get();
         assertEquals("iPhone 15 Pro", updated.name());
         assertEquals(10, updated.rating());
-        assertNotEquals(updated.createdDate(), updated.modifiedDate());
+
+
+        assertEquals(originalCreatedDate, updated.createdDate(), "createdDate should not change on update");
+
+       
+        assertNotEquals(originalModifiedDate, updated.modifiedDate(), "modifiedDate should change on update");
+        assertTrue(updated.modifiedDate().isAfter(originalModifiedDate), "modifiedDate should be later than original");
     }
 
     @Test

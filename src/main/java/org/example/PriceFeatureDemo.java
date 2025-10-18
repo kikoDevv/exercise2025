@@ -38,6 +38,7 @@ public class PriceFeatureDemo {
         // --Price validation--
         System.out.println("\n❌ Example 3: Price validation");
         try {
+            @SuppressWarnings("unused")
             Product invalidProduct = new Product.Builder()
                 .id("INVALID001")
                 .name("Invalid Product")
@@ -62,7 +63,7 @@ public class PriceFeatureDemo {
         Product book = new Product.Builder()
             .id("BOOK001")
             .name("Java Programming Book")
-            .category(Category.MOVIES)
+            .category(Category.GAMES)
             .rating(8)
             .price(new BigDecimal("29.99"))
             .build();

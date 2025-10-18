@@ -55,21 +55,18 @@ public class WarehouseTest {
 
     @Test
     void addProduct_EmptyProductId_ThrowsException() {
-        // Given
-        Product productWithEmptyId = new Product.Builder()
-            .id("   ") // Whitespace-only ID
-            .name("iPhone 15")
-            .category(Category.ELECTRONICS)
-            .rating(9)
-            .createdDate(LocalDate.now())
-            .modifiedDate(LocalDate.now())
-            .build();
-
-        // When & Then
+        // When & Then - Product builder validates ID and rejects whitespace-only IDs
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            warehouse.addProduct(productWithEmptyId);
+            new Product.Builder()
+                .id("   ") // Whitespace-only ID
+                .name("iPhone 15")
+                .category(Category.ELECTRONICS)
+                .rating(9)
+                .createdDate(LocalDate.now())
+                .modifiedDate(LocalDate.now())
+                .build();
         });
-        assertTrue(exception.getMessage().contains("Product ID cannot be empty"));
+        assertTrue(exception.getMessage().contains("ID cannot be empty"));
     }
 
     @Test
@@ -186,12 +183,12 @@ public class WarehouseTest {
         // When
         long electronicsCount = warehouse.countProductsInCategory(Category.ELECTRONICS);
         long foodCount = warehouse.countProductsInCategory(Category.FOOD);
-        long clothingCount = warehouse.countProductsInCategory(Category.CARS);
+        long carsCount = warehouse.countProductsInCategory(Category.CARS);
 
         // Then
         assertEquals(2, electronicsCount);
         assertEquals(1, foodCount);
-        assertEquals(0, clothingCount);
+        assertEquals(0, carsCount);
     }
 
     @Test
@@ -298,7 +295,7 @@ public class WarehouseTest {
             });
         }
 
-        
+
         assertTrue(latch.await(5, TimeUnit.SECONDS), "Timed out waiting for producers to finish");
         executor.shutdown();
         assertTrue(executor.awaitTermination(1, TimeUnit.SECONDS), "Executor did not terminate");

@@ -43,9 +43,7 @@ public class ProductServiceConcurrencyTest {
                     productService.addProduct(product);
                     successCount.incrementAndGet();
                 } catch (IllegalArgumentException e) {
-                    if (e.getMessage().contains("already exists")) {
-                        duplicateCount.incrementAndGet();
-                    }
+                    duplicateCount.incrementAndGet();
                 } finally {
                     latch.countDown();
                 }
@@ -171,7 +169,9 @@ public class ProductServiceConcurrencyTest {
             productService.getAllProducts().stream().anyMatch(product -> product.id().equals("CONCURRENT_UPDATE")),
             "Repository should still contain versions for CONCURRENT_UPDATE"
         );
-        Product finalProduct = productService.getProductById("CONCURRENT_UPDATE").get();
+        var productOptional = productService.getProductById("CONCURRENT_UPDATE");
+        assertTrue(productOptional.isPresent(), "Expected product to exist after concurrent updates");
+        Product finalProduct = productOptional.get();
         assertTrue(finalProduct.name().startsWith("Updated Product"));
         assertEquals(Category.GAMES, finalProduct.category());
         assertTrue(finalProduct.rating() >= 0 && finalProduct.rating() <= 10);

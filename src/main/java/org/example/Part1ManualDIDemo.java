@@ -96,5 +96,6 @@ public class Part1ManualDIDemo {
         System.out.println("User after email update: " + userService.findUserById("3"));
 
         userService.removeUser("4");
+        System.out.println("Removed user '4'. Remaining users: " + userService.getAllUsers());
     }
 }

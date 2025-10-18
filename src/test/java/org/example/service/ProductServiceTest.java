@@ -57,22 +57,19 @@ public class ProductServiceTest {
 
     @Test
     void addProduct_EmptyProductId_ThrowsException() {
-        // Given
-        Product productWithEmptyId = new Product.Builder()
-            .id("   ") // Whitespace-only ID
-            .name("iPhone 15")
-            .category(Category.ELECTRONICS)
-            .rating(9)
-            .price(new BigDecimal("999.99"))
-            .createdDate(LocalDate.now())
-            .modifiedDate(LocalDate.now())
-            .build();
-
-        // When & Then
+        // When & Then - Product builder validates ID and rejects whitespace-only IDs
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productService.addProduct(productWithEmptyId);
+            new Product.Builder()
+                .id("   ")  
+                .name("iPhone 15")
+                .category(Category.ELECTRONICS)
+                .rating(9)
+                .price(new BigDecimal("999.99"))
+                .createdDate(LocalDate.now())
+                .modifiedDate(LocalDate.now())
+                .build();
         });
-        assertTrue(exception.getMessage().contains("Product ID cannot be empty"));
+        assertTrue(exception.getMessage().contains("ID cannot be empty"));
     }
 
     @Test

@@ -56,6 +56,7 @@ public class BuilderPatternDemo {
         //Validation
         System.out.println("\n Example 5: Validation example this will throw an exception:");
         try {
+            @SuppressWarnings("unused")
             Product invalidProduct = new Product.Builder()
                 .id("PROD004")
                 .name("") // Empty name should cause validation error

@@ -49,8 +49,9 @@ public class WarehouseConcurrencyTest {
         }
 
         // Wait for all threads to complete
-        latch.await(10, TimeUnit.SECONDS);
+        assertTrue(latch.await(10, TimeUnit.SECONDS), "All threads should complete within timeout");
         executor.shutdown();
+        assertTrue(executor.awaitTermination(5, TimeUnit.SECONDS), "Executor should terminate within timeout");
 
         // Then - Only one should succeed, 99 should fail with duplicate error
         assertEquals(1, successCount.get(), "Only one thread should successfully add the product");

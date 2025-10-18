@@ -39,8 +39,8 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Optional<Product> getProductById(String id) {
-        if (id == null || id.trim().isEmpty()) {
-            return Optional.empty();
+        if (id == null || id.isEmpty() || !id.equals(id.trim())) {
+            throw new IllegalArgumentException("Product ID cannot be null, empty, or contain leading/trailing whitespace: '" + id + "'");
         }
         return Optional.ofNullable(products.get(id));
     }
@@ -58,11 +58,16 @@ public class InMemoryProductRepository implements ProductRepository {
         if (product.id() == null || product.id().trim().isEmpty()) {
             throw new IllegalArgumentException("Product ID cannot be empty");
         }
+        if (!product.id().equals(product.id().trim())) {
+            throw new IllegalArgumentException("Product ID cannot contain leading or trailing whitespace");
+        }
         if (product.name() == null || product.name().trim().isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
 
-        products.compute(product.id(), (key, existing) -> {
+        @SuppressWarnings("unused")
+        var computeResult = products.compute(product.id(), (key, existing) -> {
+           
             if (existing == null) {
                 throw new IllegalArgumentException("Product with ID " + product.id() + " not found");
             }

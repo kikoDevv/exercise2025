@@ -16,23 +16,23 @@ public class Part3WeldCDIDemo {
         // --start Weld container--
         System.out.println("\n✓ Starting Weld container...");
         Weld weld = new Weld();
-        WeldContainer container = weld.initialize();
-        System.out.println("✓ Weld container initialized");
-        System.out.println("  Weld scanned classpath for @ApplicationScoped beans");
+        try (WeldContainer container = weld.initialize()) {
+            System.out.println("✓ Weld container initialized");
+            System.out.println("  Weld scanned classpath for @ApplicationScoped beans");
 
-        // --- Scenario 1: Get bean from Weld ---
-        System.out.println("\n--- Scenario 1: Get UserService from Weld ---");
-        demonstrateWeldResolution(container);
+            // --- Scenario 1: Get bean from Weld ---
+            System.out.println("\n--- Scenario 1: Get UserService from Weld ---");
+            demonstrateWeldResolution(container);
 
-        System.out.println("\n--- Scenario 2: Weld Returns Same Instance (Singleton) ---");
-        demonstrateWeldSingleton(container);
+            System.out.println("\n--- Scenario 2: Weld Returns Same Instance (Singleton) ---");
+            demonstrateWeldSingleton(container);
 
-        System.out.println("\n--- Scenario 3: Compare with Part 1 & Part 2 ---");
-        demonstrateComparison();
+            System.out.println("\n--- Scenario 3: Compare with Part 1 & Part 2 ---");
+            demonstrateComparison();
 
-        // Clean up
-        System.out.println("\n✓ Shutting down Weld container...");
-        container.close();
+            // Clean up
+            System.out.println("\n✓ Shutting down Weld container...");
+        }
 
         System.out.println("\n" + "=".repeat(60));
         System.out.println("Weld CDI Demo Complete!");
@@ -70,7 +70,7 @@ public class Part3WeldCDIDemo {
     }
 
     /**
-     * --Demonstrates that Weld wants--
+     * Demonstrates that Weld maintains singleton scope for @ApplicationScoped beans.
      */
     private static void demonstrateWeldSingleton(WeldContainer container) {
         System.out.println("\nRequesting UserService again...");

@@ -25,9 +25,13 @@ public class Warehouse {
         if (product.name() == null || product.name().trim().isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
-        Product previous = products.putIfAbsent(product.id(), product);
+
+
+        String trimmedId = product.id().trim();
+
+        Product previous = products.putIfAbsent(trimmedId, product);
         if (previous != null) {
-            throw new IllegalArgumentException("Product with ID " + product.id() + " already exists");
+            throw new IllegalArgumentException("Product with ID " + trimmedId + " already exists");
         }
     }
 
@@ -45,11 +49,13 @@ public class Warehouse {
             throw new IllegalArgumentException("Rating must be between 0 and 10");
         }
 
-        products.compute(id, (key, existing) -> {
+        @SuppressWarnings("unused")
+        var computeResult = products.compute(id, (key, existing) -> {
+
             if (existing == null) {
                 throw new IllegalArgumentException("Product with ID " + id + " not found");
             }
-            return existing.withUpdatedFields(name, category, rating);
+            return existing.withUpdatedFields(name.trim(), category, rating);
         });
     }
 
@@ -116,9 +122,10 @@ public class Warehouse {
      // Return a map of first letters in product names and their counts
     public Map<Character, Integer> getProductInitialsMap() {
         return products.values().stream()
-                .filter(product -> !product.name().isEmpty())
+                .map(product -> product.name().trim())
+                .filter(trimmedName -> !trimmedName.isEmpty())
                 .collect(Collectors.groupingBy(
-                    product -> Character.toUpperCase(product.name().charAt(0)),
+                    trimmedName -> Character.toUpperCase(trimmedName.charAt(0)),
                     Collectors.collectingAndThen(Collectors.counting(), Math::toIntExact)
                 ));
     }
