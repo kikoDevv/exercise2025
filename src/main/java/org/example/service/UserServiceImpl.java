@@ -2,20 +2,25 @@ package org.example.service;
 
 import org.example.entities.User;
 import org.example.repository.UserRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Default implementation of UserService using constructor injection.
- * Dependencies are passed through the constructor and stored as final fields.
+ * Default implementation of UserService with CDI annotations.
+ * @ApplicationScoped - single instance for the entire application
+ * @Inject - constructor injection of the repository dependency
  */
+@ApplicationScoped
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     /**
-     * Constructor injection: the repository dependency is passed as a parameter.
-     * This demonstrates the core principle of constructor injection.
+     * Constructor injection with @Inject annotation.
+     * Weld will automatically inject the UserRepository dependency.
      */
+    @Inject
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

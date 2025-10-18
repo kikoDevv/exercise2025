@@ -1,8 +1,11 @@
 package org.example.repository;
 
 import org.example.entities.User;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.*;
 
+
+@ApplicationScoped
 public class InMemoryUserRepository implements UserRepository {
     private final Map<String, User> users = new HashMap<>();
 
