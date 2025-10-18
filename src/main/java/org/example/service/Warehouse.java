@@ -36,13 +36,10 @@ public class Warehouse {
     }
 
     public void updateProduct(String id, String name, Category category, int rating) {
-        String normalizedId = (id == null) ? null : id.trim();
-        String normalizedName = (name == null) ? null : name.trim();
-
-        if (normalizedId == null || normalizedId.isEmpty()) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("Product ID cannot be empty");
         }
-        if (normalizedName == null || normalizedName.isEmpty()) {
+        if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
         if (category == null) {
@@ -52,13 +49,14 @@ public class Warehouse {
             throw new IllegalArgumentException("Rating must be between 0 and 10");
         }
 
+        String normalizedId = id.trim();
         @SuppressWarnings("unused")
         var computeResult = products.compute(normalizedId, (key, existing) -> {
 
             if (existing == null) {
                 throw new IllegalArgumentException("Product with ID " + normalizedId + " not found");
             }
-            return existing.withUpdatedFields(normalizedName, category, rating);
+            return existing.withUpdatedFields(name.trim(), category, rating);
         });
     }
 

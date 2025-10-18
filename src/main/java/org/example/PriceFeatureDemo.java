@@ -63,7 +63,7 @@ public class PriceFeatureDemo {
         Product book = new Product.Builder()
             .id("BOOK001")
             .name("Java Programming Book")
-            .category(Category.GAMES)
+            .category(Category.ELECTRONICS)
             .rating(8)
             .price(new BigDecimal("29.99"))
             .build();
