@@ -1,2 +1,5 @@
 target/
 /.idea/
+
+# VS Code local settings with machine-specific paths
+.vscode/settings.json

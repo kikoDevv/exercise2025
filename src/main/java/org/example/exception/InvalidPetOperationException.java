@@ -1,7 +1,7 @@
 package org.example.exception;
 
 /**
- * Exception thrown when an invalid operation on a pet.
+ * Exception thrown when an invalid operation is performed on a pet.
  */
 public class InvalidPetOperationException extends RuntimeException {
 

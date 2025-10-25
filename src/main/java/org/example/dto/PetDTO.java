@@ -55,6 +55,15 @@ public class PetDTO implements Serializable {
         this.happiness = happiness;
     }
 
+    // --Copy constructor--
+    public PetDTO(PetDTO other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.species = other.species;
+        this.hungerLevel = other.hungerLevel;
+        this.happiness = other.happiness;
+    }
+
     // --Getters and Setters--
     public Long getId() {
         return id;
