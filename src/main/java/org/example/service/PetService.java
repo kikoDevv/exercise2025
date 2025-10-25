@@ -54,24 +54,15 @@ public class PetService {
 
     // -- reduse hunger lever---
     public Optional<PetDTO> feedPet(Long id, int amount) {
-        // Input validation
         if (amount < 0) {
             throw new IllegalArgumentException("Amount must be non-negative");
         }
-
-        lock.lock();
-        try {
-            PetDTO pet = pets.get(id);
-            if (pet == null) {
-                return Optional.empty();
-            }
-
-            int newHungerLevel = Math.max(0, pet.getHungerLevel() - amount);
-            pet.setHungerLevel(newHungerLevel);
-            return Optional.of(new PetDTO(pet));
-        } finally {
-            lock.unlock();
-        }
+        PetDTO updated = pets.computeIfPresent(id, (k, existing) -> {
+            PetDTO copy = new PetDTO(existing);
+            copy.setHungerLevel(Math.max(0, existing.getHungerLevel() - amount));
+            return copy;
+        });
+        return Optional.ofNullable(updated).map(PetDTO::new);
     }
 
     //-- play with pet--
