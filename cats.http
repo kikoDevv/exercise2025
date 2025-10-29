@@ -2,3 +2,8 @@
 GET http://localhost:8080/cats
 
 ###
+
+< {%
+    request.variables.set("name", "Sigge")
+%}
+GET http://localhost:8080/cats/{{name}}
