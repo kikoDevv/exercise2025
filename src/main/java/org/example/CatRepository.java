@@ -26,6 +26,4 @@ public interface CatRepository extends ListCrudRepository<Cat, Integer> {
 
     @EntityGraph("Cat.favorites")
     List<Cat> findCatsBy();
-
-
 }

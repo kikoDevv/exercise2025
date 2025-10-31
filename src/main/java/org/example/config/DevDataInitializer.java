@@ -41,7 +41,7 @@ public class DevDataInitializer implements ApplicationRunner {
             var food3 = new Food("Meat");
             var food4 = new Food("Milk");
             foodRepository.saveAll(List.of(food1, food2, food3, food4));
-
+            System.out.println("Food 1 id= " + food1.getId());
             repository.saveAll(List.of(
                     new Cat("Sigge", 13, List.of(food1, food2)),
                     new Cat("Maja", 3, List.of(food3, food4))
