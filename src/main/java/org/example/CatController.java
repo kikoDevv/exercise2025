@@ -1,12 +1,12 @@
 package org.example;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("api")
+@RestController
+@RequestMapping("api")
 public class CatController {
 
     private final CatRepository repository;
@@ -16,6 +16,7 @@ public class CatController {
     }
 
     @GetMapping("cats")
+    @PreAuthorize("hasRole('API')")  //Spring Expression Language (SpEL)
     public List<Cat> getAll() {
         return repository.findCatsBy().stream()
                 .map(cat -> new Cat(cat.getName(), cat.getAge(), cat.getFavorites()))

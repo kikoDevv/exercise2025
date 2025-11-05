@@ -11,5 +11,4 @@
 //	public void customize(FluentConfiguration configuration) {
 //		configuration.javaMigrations();
 //	}
-//
 //}
