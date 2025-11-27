@@ -23,6 +23,11 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @PostMapping("/cats")
     public String addCat(@RequestParam String name, @RequestParam int age) {
         Cat cat = new Cat(name, age, java.util.List.of());

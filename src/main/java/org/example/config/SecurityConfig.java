@@ -45,9 +45,11 @@ public class SecurityConfig {
                 .authenticationManager(authenticationManager)
                 .authorizeHttpRequests(auth ->
                         auth
+                                .requestMatchers("/login").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(form ->
-                        form.defaultSuccessUrl("/"));
+                        form.loginPage("/login")
+                                .defaultSuccessUrl("/"));
         return http.build();
     }
 
