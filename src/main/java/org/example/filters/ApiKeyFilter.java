@@ -29,8 +29,13 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             SecurityContext context = SecurityContextHolder.createEmptyContext();
             context.setAuthentication(auth);
             SecurityContextHolder.setContext(context);
-            filterChain.doFilter(request, response);
-        } else
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+        filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        // Only apply this filter to /api/** paths
+        return !request.getRequestURI().startsWith("/api/");
     }
 }

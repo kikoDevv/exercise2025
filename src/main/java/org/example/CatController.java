@@ -1,5 +1,6 @@
 package org.example;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +29,14 @@ public class CatController {
         return repository.findBy(name)
                 .map(cat -> new Cat(cat.getName(), cat.getAge(), cat.getFavorites()))
                 .orElseThrow();
+    }
+
+    @PostMapping("cats")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('API')")
+    public Cat createCat(@RequestBody Cat cat) {
+        var entity = new org.example.entities.Cat(cat.name(), cat.age(), List.of());
+        var saved = repository.save(entity);
+        return new Cat(saved.getName(), saved.getAge(), saved.getFavorites());
     }
 }

@@ -28,8 +28,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChainApi(HttpSecurity http, ApiKeyFilter apiKeyFilter) throws Exception {
         http
                 .securityMatcher("/api/**")
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.GET, "/api/cats").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/cats").authenticated()
                                 .anyRequest().denyAll()
                 )
                 .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class);

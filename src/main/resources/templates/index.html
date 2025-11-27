@@ -19,5 +19,12 @@
     </table>
 
     <p th:if="${#lists.isEmpty(cats)}">No cats found.</p>
+
+    <h2>Add a New Cat</h2>
+    <form th:action="@{/cats}" method="post">
+      <label>Name: <input type="text" name="name" required /></label><br /><br />
+      <label>Age: <input type="number" name="age" required min="0" /></label><br /><br />
+      <button type="submit">Add Cat</button>
+    </form>
   </body>
 </html>
