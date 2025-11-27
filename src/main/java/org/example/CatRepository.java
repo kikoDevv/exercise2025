@@ -1,6 +1,5 @@
 package org.example;
 
-import jakarta.persistence.NamedEntityGraph;
 import org.example.entities.Cat;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
