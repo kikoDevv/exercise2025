@@ -1,5 +1,7 @@
 package org.example;
 
+import jakarta.validation.Valid;
+import org.example.entities.Food;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +36,9 @@ public class CatController {
     @PostMapping("cats")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('API')")
-    public Cat createCat(@RequestBody Cat cat) {
-        var entity = new org.example.entities.Cat(cat.name(), cat.age(), List.of());
+    public Cat createCat(@Valid @RequestBody Cat cat) {
+        List<Food> favorites = cat.foodList() != null ? cat.foodList() : List.of();
+        var entity = new org.example.entities.Cat(cat.name(), cat.age(), favorites);
         var saved = repository.save(entity);
         return new Cat(saved.getName(), saved.getAge(), saved.getFavorites());
     }

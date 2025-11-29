@@ -52,15 +52,14 @@ class CatControllerTest {
     // ========== POST /api/cats Tests ==========
 
     @Test
-    @WithMockUser(roles = {"API"})
-    void postCat_withApiRole_shouldReturnCreated() throws Exception {
+    void postCat_withApiKey_shouldReturnCreated() throws Exception {
         Cat cat = new Cat("Whiskers", 3, List.of());
         Mockito.when(repository.save(Mockito.any(Cat.class))).thenReturn(cat);
 
         mockMvc.perform(post("/api/cats")
                         .header("X-API-KEY", "secret")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"Whiskers\", \"age\": 3}")
+                        .content("{\"name\": \"Whiskers\", \"age\": 3, \"foodList\": []}")
                         .with(csrf()))
                 .andExpect(status().isCreated());
     }
