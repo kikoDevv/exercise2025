@@ -14,12 +14,14 @@ public interface CatRepository extends ListCrudRepository<Cat, Integer> {
 
     //JPQL-query
     @Query("""
-        select cat.id, upper(cat.name), cat.age, cat.createdAt from Cat cat where cat.name = :name
+        select cat from Cat cat
+        where upper(cat.name) = upper(:name)
     """)
     Optional<Cat> findBy(@Param("name") String name);
 
     @Query("""
-        from Cat cat join fetch cat.favorites f
+        select distinct cat from Cat cat
+        left join fetch cat.favorites
         """)
     List<Cat> findCatsAndFood();
 

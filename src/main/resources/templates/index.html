@@ -274,7 +274,6 @@
         font-weight: 600;
         font-size: 0.9rem;
       }
-     
 
       .header {
         display: grid;
@@ -322,9 +321,18 @@
             <input type="text" id="name" name="name" placeholder="Enter cat's name..." required />
           </div>
           <div class="form-group">
+            <label for="age">Cat's Age</label>
             <div class="slider-container">
               <span class="slider-value" id="ageValue">0 years</span>
-              <input type="range" id="age" name="age" min="0" max="25" value="0" oninput="updateSlider(this)" />
+              <input
+                type="range"
+                id="age"
+                name="age"
+                min="0"
+                max="25"
+                value="0"
+                oninput="updateSlider(this)"
+                aria-describedby="ageValue" />
               <div class="slider-labels">
                 <span>0</span>
                 <span>Kitten</span>

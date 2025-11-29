@@ -5,6 +5,7 @@ import org.example.entities.Food;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,10 +28,12 @@ public class CatController {
     }
 
     @GetMapping("cats/{name}")
+    @PreAuthorize("hasRole('API')")
     public Cat getByName(@PathVariable String name) {
         return repository.findBy(name)
                 .map(cat -> new Cat(cat.getName(), cat.getAge(), cat.getFavorites()))
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Cat not found: " + name));
     }
 
     @PostMapping("cats")
