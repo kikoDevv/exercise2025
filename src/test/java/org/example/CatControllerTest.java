@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -32,8 +30,7 @@ class CatControllerTest {
     // ========== GET /api/cats Tests ==========
 
     @Test
-    @WithMockUser(roles = {"API"})
-    void getCats_withApiRole_shouldReturnOk() throws Exception {
+    void getCats_withApiKey_shouldReturnOk() throws Exception {
         List<Cat> cats = List.of(new Cat("Misse", 10, List.of()));
         Mockito.when(repository.findCatsBy()).thenReturn(cats);
 
@@ -43,8 +40,7 @@ class CatControllerTest {
     }
 
     @Test
-    void getCats_withoutAuthentication_shouldBeDenied() throws Exception {
-        // Without API key, access is denied (403 Forbidden)
+    void getCats_withoutApiKey_shouldBeDenied() throws Exception {
         mockMvc.perform(get("/api/cats"))
                 .andExpect(status().isForbidden());
     }
@@ -59,18 +55,15 @@ class CatControllerTest {
         mockMvc.perform(post("/api/cats")
                         .header("X-API-KEY", "secret")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"Whiskers\", \"age\": 3, \"foodList\": []}")
-                        .with(csrf()))
+                        .content("{\"name\": \"Whiskers\", \"age\": 3, \"foodList\": []}"))
                 .andExpect(status().isCreated());
     }
 
     @Test
-    void postCat_withoutAuthentication_shouldBeDenied() throws Exception {
-        // Without API key, access is denied (403 Forbidden)
+    void postCat_withoutApiKey_shouldBeDenied() throws Exception {
         mockMvc.perform(post("/api/cats")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"Whiskers\", \"age\": 3}")
-                        .with(csrf()))
+                        .content("{\"name\": \"Whiskers\", \"age\": 3}"))
                 .andExpect(status().isForbidden());
     }
 }
